@@ -61,14 +61,14 @@ public class TestUpOnly extends TestUtils {
     /** A triple merge. Only the leading 2 tiles should merge. */
     public void testUpTripleMerge() {
         int[][] before = new int[][] {
-                {0, 0, 2, 0},
+                {0, 4, 4, 0},
                 {0, 0, 0, 0},
                 {0, 0, 2, 0},
                 {0, 0, 2, 0},
         };
         int[][] after = new int[][] {
-                {0, 0, 4, 0},
-                {0, 0, 2, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
         };

@@ -594,13 +594,13 @@ public class TestModel extends TestUtils {
                 {0, 0, 0, 0},
                 {0, 2, 0, 0},
                 {0, 0, 0, 0},
-                {0, 4, 0, 0},
+                {0, 4, 8, 0},
         };
         int[][] after = new int[][]{
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 2, 0, 0},
-                {0, 4, 0, 0},
+                {0, 4, 8, 0},
         };
 
         updateModel(before, 0, 0, false);

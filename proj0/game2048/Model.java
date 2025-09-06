@@ -1,7 +1,9 @@
 package game2048;
 
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Observable;
+import java.util.function.BiPredicate;
 
 
 /** The state of a game of 2048.
@@ -106,18 +108,49 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      * */
+
+    public int[] getNextPosition(int[] boundary, Tile tile, int row, int col) {
+//        int row = tile.row(), col = tile.col();
+        while(row + 1 < boundary[col]) {
+            Tile nextTile = board.tile(col, row + 1);
+            if (nextTile != null) {
+                if (nextTile.value() == tile.value()) {
+                    this.score += tile.value() * 2;
+                    boundary[col] = row + 1;
+                    return new int[]{row + 1, col};
+                }
+//                boundary[col] = row;
+                return new int[]{row, col};
+            }
+            row ++;
+        }
+        return new int[]{row, col};
+    }
+
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
+        boolean changed = false;
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        board.setViewingPerspective(side);
 
-        checkGameOver();
-        if (changed) {
-            setChanged();
+        int size = board.size();
+        int[] boundary = new int[size];
+        Arrays.fill(boundary, size);
+
+        for(int col = 0; col < size; ++ col) {
+            for(int row = size - 1; row >= 0; -- row) {
+                if(board.tile(col, row) == null) continue;
+                int[] position = getNextPosition(boundary, board.tile(col, row), row, col);
+                board.move(position[1], position[0], board.tile(col, row));
+                if(position[0] != row || position[1] != col) changed = true;
+            }
         }
+
+        board.setViewingPerspective(Side.NORTH);
+        checkGameOver();
+        if (changed) setChanged();
         return changed;
     }
 
@@ -137,7 +170,11 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        int size = b.size();
+        for(int i = 0; i < size; ++ i)
+            for(int j = 0; j < size; ++ j)
+                if(b.tile(i, j) == null)
+                    return true;
         return false;
     }
 
@@ -147,7 +184,11 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+       int size = b.size();
+       for(int i = 0; i < size; ++ i)
+           for(int j = 0; j < size; ++ j)
+               if(b.tile(i, j) != null && b.tile(i, j).value() == MAX_PIECE)
+                   return true;
         return false;
     }
 
@@ -157,8 +198,32 @@ public class Model extends Observable {
      * 1. There is at least one empty space on the board.
      * 2. There are two adjacent tiles with the same value.
      */
+    public static boolean canBeMerged(Board b, Side side) {
+        int size = b.size();
+        b.setViewingPerspective(side);
+
+        for(int i = 0; i < size - 1; ++ i) {
+            for(int j = 0; j < size; ++ j) {
+                Tile t1 = b.tile(j, i);
+                Tile t2 = b.tile(j, i + 1);
+
+                if (t1 != null && t2 != null && t1.value() == t2.value()) {
+                    b.setViewingPerspective(Side.NORTH);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        if (emptySpaceExists(b) ) return true;
+
+        for(Side side : Side.values())
+            if(canBeMerged(b, side))
+                return true;
+
         return false;
     }
 
