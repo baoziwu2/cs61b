@@ -52,9 +52,20 @@ public class SLList<Item> {
 	}
 
 	/** returns last item in the list */
-	public Item getLast() {
-        return tailElement.item;
-	}
+    public Item getLast() {
+        IntNode p = sentinelHead;
+
+        /* Advance p to the end of the list. */
+        while (p.next != null) {
+            p = p.next;
+        }
+
+        return p.item;
+    }
+
+//	public Item getLast() {
+//        return tailElement.item;
+//	}
 
 
 	/** Returns the size of the list. */

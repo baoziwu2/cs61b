@@ -26,7 +26,8 @@ public class TimeSLList {
     }
 
     public static void addLastUntil(int x, SLList<Integer> list) {
-        while(list.size() < x) list.addLast(5);
+        while(list.size() < x)
+            list.addLast(list.size());
     }
 
     public static double getTimeAfterOperator(SLList<Integer> list) {
