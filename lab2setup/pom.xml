@@ -30,7 +30,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>252.25557.131</version>
+                <version>3.13.0</version>
                 <configuration>
                     <source>1.9</source>
                     <target>1.9</target>
@@ -39,7 +39,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>252.25557.131</version>
+                <version>3.8.1</version>
                 <configuration>
                     <compilerArgs>
                         <arg>-J-XX:+ShowCodeDetailsInExceptionMessages</arg>

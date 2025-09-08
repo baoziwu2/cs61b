@@ -14,56 +14,46 @@ public class SLList<Item> {
 	}
 
 	/* The first item (if it exists) is at sentinel.next. */
-	private IntNode sentinel;
+	private IntNode sentinelHead;
+    private IntNode tailElement;
 	private int size;
 
 	/** Creates an empty timingtest.SLList. */
 	public SLList() {
-		sentinel = new IntNode(null, null);
+		sentinelHead = new IntNode(null, null);
+        tailElement = sentinelHead;
 		size = 0;
 	}
 
 	public SLList(Item x) {
-		sentinel = new IntNode(null, null);
-		sentinel.next = new IntNode(x, null);
+		sentinelHead = new IntNode(null, null);
+		sentinelHead.next = new IntNode(x, null);
+        tailElement = sentinelHead.next;
 		size = 1;
 	}
 
 	/** Adds x to the front of the list. */
 	public void addFirst(Item x) {
-		sentinel.next = new IntNode(x, sentinel.next);
+		sentinelHead.next = new IntNode(x, sentinelHead.next);
 		size = size + 1;
 	}
 
 	/** Returns the first item in the list. */
 	public Item getFirst() {
-		return sentinel.next.item;
+		return sentinelHead.next.item;
 	}
 
 	/** Adds x to the end of the list. */
 	public void addLast(Item x) {
-		size = size + 1;
-
-		IntNode p = sentinel;
-
-		/* Advance p to the end of the list. */
-		while (p.next != null) {
-			p = p.next;
-		}
-
-		p.next = new IntNode(x, null);
+		IntNode p = tailElement;
+        p.next = new IntNode(x, null);
+        tailElement = tailElement.next;
+        if(size ++ == 0) sentinelHead.next = tailElement;
 	}
 
 	/** returns last item in the list */
 	public Item getLast() {
-		IntNode p = sentinel;
-
-		/* Advance p to the end of the list. */
-		while (p.next != null) {
-			p = p.next;
-		}
-
-		return p.item;
+        return tailElement.item;
 	}
 
 
