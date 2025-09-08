@@ -24,22 +24,18 @@ public class TimeAList {
         timeAListConstruction();
     }
 
+    public static boolean is2Power(int x) {
+        return x == (x & -x);
+    }
+
     public static void timeAListConstruction() {
         AList<Integer> listForTest = new AList<>(), opCountsForTest = new AList<>();
         AList<Double> timesForTest = new AList<>();
         Stopwatch stopwatch = new Stopwatch();
 
-        Predicate<Integer> is2Power = (Integer p) -> {
-            while(p != 1) {
-                if ((p & 1) != 0) return false;
-                p >>= 1;
-            }
-            return true;
-        };
-
         for(int i = 1; i <= MAX_OP_NUMBER; ++ i) {
             listForTest.addLast(i);
-            if(i % 1000 == 0 && is2Power.test(i / 1000)) {
+            if(i % 1000 == 0 && is2Power(i / 1000)) {
                 opCountsForTest.addLast(i);
                 double time = stopwatch.elapsedTime();
                 timesForTest.addLast(time);

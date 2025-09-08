@@ -38,17 +38,17 @@ public class TimeSLList {
         return stopWatch.elapsedTime();
     }
 
+    public static boolean is2Power(int x) {
+        return x == (x & -x);
+    }
+
     public static void timeGetLast() {
         AList<Integer> testNumberInDocker = new AList<>(), testOpNumberInDocker = new AList<>();
         AList<Double> testTimes = new AList<>();
         SLList<Integer> testDocker = new SLList<>();
 
-        Predicate<Integer> is2Power = (Integer p) -> {
-           return p == (p & -p);
-        };
-
         for(int i = 1; i <= MAX_OP_NUMBER; ++ i) {
-            if(i % 1000 == 0 && is2Power.test(i / 1000)) {
+            if(i % 1000 == 0 && is2Power(i / 1000)) {
                 testNumberInDocker.addLast(i);
                 testOpNumberInDocker.addLast(OP_NUMBER);
                 addLastUntil(i, testDocker);
