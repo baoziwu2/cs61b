@@ -6,16 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="proj3" />
+        <module name="proj2" />
+        <module name="proj1" />
         <module name="lab2setup" />
         <module name="lab3" />
         <module name="lab4" />
+        <module name="lab2setup (2)" />
         <module name="lab2" />
         <module name="lab7" />
         <module name="lab8" />
-        <module name="proj3" />
-        <module name="proj2" />
+        <module name="lab2setup (1)" />
         <module name="lab6" />
-        <module name="proj1" />
         <module name="proj1ec" />
       </profile>
     </annotationProcessing>
@@ -24,6 +26,8 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="lab2" options="-J-XX:+ShowCodeDetailsInExceptionMessages" />
       <module name="lab2setup" options="-J-XX:+ShowCodeDetailsInExceptionMessages" />
+      <module name="lab2setup (1)" options="-J-XX:+ShowCodeDetailsInExceptionMessages" />
+      <module name="lab2setup (2)" options="-J-XX:+ShowCodeDetailsInExceptionMessages" />
       <module name="lab3" options="-J-XX:+ShowCodeDetailsInExceptionMessages" />
       <module name="lab4" options="-J-XX:+ShowCodeDetailsInExceptionMessages" />
       <module name="lab6" options="-J-XX:+ShowCodeDetailsInExceptionMessages" />
