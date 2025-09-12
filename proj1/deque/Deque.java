@@ -12,7 +12,7 @@ public interface Deque<T> extends Iterable<T> {
     boolean isEmpty();
     T get(int index);
 
-    Iterator<T> iterator();
+    //Iterator<T> iterator();
 
     @Override
     boolean equals(Object o);
