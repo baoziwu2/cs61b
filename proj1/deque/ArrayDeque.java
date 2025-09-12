@@ -39,12 +39,14 @@ public class ArrayDeque<typeName> implements Deque<typeName> {
     }
 
     public typeName removeFirst() {
+        if(size == 0) return null;
         size -= 1;
         indexFront = addInCircular(indexFront, 1);
         return item[indexFront];
     }
 
     public typeName removeLast() {
+        if(size == 0) return null;
         size -= 1;
         indexLast = subInCircular(indexLast, 1);
         return item[indexLast];
