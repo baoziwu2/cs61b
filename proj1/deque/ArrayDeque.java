@@ -7,7 +7,7 @@ public class ArrayDeque<typeName> implements Deque<typeName> {
     private int indexFront, indexLast; // 指针指向下一个元素放置的位置
     private typeName[] item;
 
-    ArrayDeque() {
+    public ArrayDeque() {
         size = 0;
         item = (typeName[]) new Object[INIT_LENGTH];
         indexFront = INIT_LENGTH / 2;
