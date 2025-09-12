@@ -55,13 +55,13 @@ public class ArrayDeque<typeName> implements Deque<typeName> {
         return item[addInCircular(indexFront, index + 1)];
     }
 
-    public typeName front() {
-        return item[addInCircular(indexFront, 1)];
-    }
-
-    public typeName back() {
-        return item[subInCircular(indexLast, 1)];
-    }
+//    public typeName front() {
+//        return item[addInCircular(indexFront, 1)];
+//    }
+//
+//    public typeName back() {
+//        return item[subInCircular(indexLast, 1)];
+//    }
 
     public int size() {
         return size;
