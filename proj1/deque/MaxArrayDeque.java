@@ -1,4 +1,5 @@
 package deque;
+
 import java.util.Comparator;
 
 public class MaxArrayDeque<typeName> extends ArrayDeque<typeName> {
@@ -11,7 +12,7 @@ public class MaxArrayDeque<typeName> extends ArrayDeque<typeName> {
     }
 
     public typeName max(Comparator<typeName> cmp) {
-        if(isEmpty()) {
+        if (isEmpty()) {
             return null;
         }
 

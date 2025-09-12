@@ -1,20 +1,21 @@
 package deque;
 
-public class LinkedListDeque<typeName> implements Deque<typeName> {
+public class LinkedListDeque<T> implements Deque<T> {
     private class Node {
-        typeName data;
+        T data;
         Node next;
         Node prev;
 
-        Node(typeName data, Node prev, Node next) {
+        Node(T data, Node prev, Node next) {
             this.data = data;
             this.next = next;
             this.prev = prev;
         }
 
-        Node(typeName data) {
+        Node(T data) {
             this.data = data;
-            this.next = this.prev = null;
+            prev = null;
+            next = null;
         }
     }
 
@@ -28,14 +29,14 @@ public class LinkedListDeque<typeName> implements Deque<typeName> {
         size = 0;
     }
 
-    public void addFirst(typeName item) {
+    public void addFirst(T item) {
         Node temp = new Node(item, headSentinel, headSentinel.next);
         headSentinel.next.prev = temp;
         headSentinel.next = temp;
         size += 1;
     }
 
-    public void addLast(typeName item) {
+    public void addLast(T item) {
         Node temp = new Node(item, headSentinel.prev, headSentinel);
         headSentinel.prev.next = temp;
         headSentinel.prev = temp;
@@ -52,15 +53,17 @@ public class LinkedListDeque<typeName> implements Deque<typeName> {
 
     public void printDeque() {
         Node temp = headSentinel.next;
-        while(temp != headSentinel) {
+        while (temp != headSentinel) {
             System.out.print(temp.data + " ");
             temp = temp.next;
         }
         System.out.println();
     }
 
-    public typeName removeFirst() {
-        if(size == 0) return null;
+    public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         Node temp = headSentinel.next;
         headSentinel.next = temp.next;
         temp.next.prev = headSentinel;
@@ -68,8 +71,10 @@ public class LinkedListDeque<typeName> implements Deque<typeName> {
         return temp.data;
     }
 
-    public typeName removeLast() {
-        if(size == 0) return null;
+    public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         Node temp = headSentinel.prev;
         headSentinel.prev = temp.prev;
         temp.prev.next = headSentinel;
@@ -77,22 +82,30 @@ public class LinkedListDeque<typeName> implements Deque<typeName> {
         return temp.data;
     }
 
-    public typeName get(int index) {
-        if (index < 0 || index >= size) return null;
+    public T get(int index) {
+        if (index < 0 || index >= size) {
+            return null;
+        }
         Node p = headSentinel.next;
-        for (int i = 0; i < index; i++) p = p.next;
+        for (int i = 0; i < index; ++i) {
+            p = p.next;
+        }
         return p.data;
     }
 
-    public typeName getRecursive(int index) {
+    public T getRecursive(int index) {
         class HelperFunction {
-            public typeName get(Node currentNode, int index) {
-                if(index == 0) return currentNode.data;
-                if(currentNode.next == headSentinel) return null;
+            public T get(Node currentNode, int index) {
+                if (index == 0) {
+                    return currentNode.data;
+                }
+                if (currentNode.next == headSentinel) {
+                    return null;
+                }
                 return get(currentNode.next, index - 1);
             }
         }
-        HelperFunction helper = new  HelperFunction();
+        HelperFunction helper = new HelperFunction();
         return helper.get(headSentinel.next, index);
     }
 }

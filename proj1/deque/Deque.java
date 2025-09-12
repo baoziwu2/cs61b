@@ -1,12 +1,12 @@
 package deque;
 
-public interface Deque<typeName> {
-    void addFirst(typeName item);
-    void addLast(typeName item);
-    typeName removeFirst();
-    typeName removeLast();
+public interface Deque<T> {
+    void addFirst(T item);
+    void addLast(T item);
+    T removeFirst();
+    T removeLast();
     void printDeque();
     int size();
     boolean isEmpty();
-    typeName get(int index);
+    T get(int index);
 }

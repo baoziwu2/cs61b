@@ -68,7 +68,6 @@ public class DequeRandomizedTest {
                     // 注意：java.util.ArrayDeque 没有 get(index) 方法，
                     // 所以我们把它转换成数组来获取对应索引的值
                     Integer myVal = myDeque.get(randomIndex);
-                    if(myVal != null) continue;
                     Object[] javaArray = javaDeque.toArray();
                     Integer javaVal = (Integer) javaArray[randomIndex];
                     operationLog = "get(" + randomIndex + ")";
