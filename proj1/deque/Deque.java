@@ -1,6 +1,6 @@
 package deque;
 
-public interface Deque<T> extends Iterable<T> {
+public interface Deque<T> {
     void addFirst(T item);
     void addLast(T item);
     T removeFirst();
@@ -9,7 +9,4 @@ public interface Deque<T> extends Iterable<T> {
     int size();
     boolean isEmpty();
     T get(int index);
-
-    @Override
-    boolean equals(Object o);
 }
