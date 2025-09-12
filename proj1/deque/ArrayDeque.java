@@ -78,10 +78,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return size;
     }
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
     public void printDeque() {
         for (int i = addInCircular(indexFront, 1); i != indexLast; i = addInCircular(i, 1)) {
             System.out.println(item[i]);
@@ -112,7 +108,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private class ArrayDequeIterator implements Iterator<T> {
         private int currentPosition;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             currentPosition = addInCircular(indexFront, 1);
         }
 

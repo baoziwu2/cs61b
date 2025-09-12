@@ -50,10 +50,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return size;
     }
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
     public void printDeque() {
         Node temp = headSentinel.next;
         while (temp != headSentinel) {
