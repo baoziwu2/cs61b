@@ -22,8 +22,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    Node headSentinel; // complete loop linked list:
-    int size;
+    private Node headSentinel; // complete loop linked list:
+    private int size;
 
     public LinkedListDeque() {
         headSentinel = new Node(null, null, null);
@@ -113,7 +113,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return new LinkedListDequeIterator();
     }
 
-    public class LinkedListDequeIterator implements Iterator<T> {
+    private class LinkedListDequeIterator implements Iterator<T> {
         private Node currentNode;
 
         public LinkedListDequeIterator() {

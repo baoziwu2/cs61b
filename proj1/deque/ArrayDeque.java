@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
-    public static final int INIT_LENGTH = 8;
+    private static final int INIT_LENGTH = 8;
 
     private int size;
     private int indexFront, indexLast; // 指针指向下一个元素放置的位置
@@ -17,14 +17,14 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         indexLast = indexFront + 1;
     }
 
-    public int addInCircular(int pointer, int var) {
+    private int addInCircular(int pointer, int var) {
         if (pointer + var >= item.length) {
             pointer -= item.length;
         }
         return pointer + var;
     }
 
-    public int subInCircular(int pointer, int var) {
+    private int subInCircular(int pointer, int var) {
         if (pointer - var < 0) {
             pointer += item.length;
         }
@@ -85,7 +85,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         System.out.println();
     }
 
-    public void resize(int newSize) {
+    private void resize(int newSize) {
         T[] temp = (T[]) new Object[newSize];
         int current = addInCircular(indexFront, 1);
 
