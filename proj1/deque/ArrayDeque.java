@@ -112,7 +112,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private class ArrayDequeIterator implements Iterator<T> {
         private int currentPosition;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             currentPosition = addInCircular(indexFront, 1);
         }
 
@@ -126,9 +126,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            T item = get(currentPosition);
+            T var = get(currentPosition);
             currentPosition = addInCircular(currentPosition, 1);
-            return item;
+            return var;
         }
     }
 
