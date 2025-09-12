@@ -1,6 +1,9 @@
 package deque;
 
-public class ArrayDeque<T> implements Deque<T> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     public static final int INIT_LENGTH = 8;
 
     private int size;
@@ -99,5 +102,68 @@ public class ArrayDeque<T> implements Deque<T> {
 
         indexFront = newSize - 1;
         indexLast = size;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int currentPosition;
+
+        public ArrayDequeIterator() {
+            currentPosition = addInCircular(indexFront, 1);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currentPosition != indexLast;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            T item = get(currentPosition);
+            currentPosition = addInCircular(currentPosition, 1);
+            return item;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+
+        Deque<?> other = (Deque<?>) o;
+
+        if (this.size() != other.size()) {
+            return false;
+        }
+
+        Iterator<T> thisIterator = this.iterator();
+        Iterator<?> otherIterator = other.iterator();
+
+        while (thisIterator.hasNext()) {
+            T itemFromThis = thisIterator.next();
+            Object itemFromOther = otherIterator.next();
+
+            if (itemFromThis == null) {
+                if (itemFromOther != null) {
+                    return false;
+                }
+            } else if (!itemFromThis.equals(itemFromOther)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
