@@ -1,10 +1,10 @@
 package gh2;
 
-// TODO: uncomment the following import once you're ready to start this portion
+// DONE: uncomment the following import once you're ready to start this portion
 
 import deque.ArrayDeque;
 import deque.Deque;
-// TODO: maybe more imports
+// DONE: maybe more imports
 
 //Note: This file will not compile until you complete the Deque implementations
 public class GuitarString {
@@ -28,7 +28,9 @@ public class GuitarString {
         //       Your should initially fill your buffer array with zeros.
         long capacity = Math.round(SR / frequency);
         buffer = new ArrayDeque<Double>();
-        for (int i = 0; i < capacity; ++i) buffer.addLast(0.0);
+        for (int i = 0; i < capacity; ++i) {
+            buffer.addLast(0.0);
+        }
     }
 
 
@@ -43,9 +45,12 @@ public class GuitarString {
         //       are different from each other. It means you should repeatedly call
         //       Math.random() - 0.5 to generate new random numbers for each array index.
         int size = buffer.size();
-        while (!buffer.isEmpty()) buffer.removeLast();
-        while (buffer.size() < size)
+        while (!buffer.isEmpty()) {
+            buffer.removeLast();
+        }
+        while (buffer.size() < size) {
             buffer.addLast(Math.random() - 0.5);
+        }
     }
 
     /* Advance the simulation one time step by performing one iteration of
@@ -66,4 +71,4 @@ public class GuitarString {
         return buffer.get(0);
     }
 }
-// Done: Remove all comments that say TODO when you're done.
+
