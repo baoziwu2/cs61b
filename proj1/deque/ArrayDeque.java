@@ -56,7 +56,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         size -= 1;
         indexFront = addInCircular(indexFront, 1);
         T temp = item[indexFront];
-        if(size < item.length >> 2 && item.length > INIT_LENGTH) {
+        if (size < item.length >> 2 && item.length > INIT_LENGTH) {
             resize(item.length >> 1);
         }
         return temp;
@@ -69,7 +69,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         size -= 1;
         indexLast = subInCircular(indexLast, 1);
         T temp = item[indexLast];
-        if(size < item.length >> 2 && item.length > INIT_LENGTH) {
+        if (size < item.length >> 2 && item.length > INIT_LENGTH) {
             resize(item.length >> 1);
         }
         return temp;
