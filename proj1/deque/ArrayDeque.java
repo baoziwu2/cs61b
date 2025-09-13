@@ -54,11 +54,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
         size -= 1;
-        if(size < item.length >> 2){
+        indexFront = addInCircular(indexFront, 1);
+        T temp = item[indexFront];
+        if(size < item.length >> 2 && item.length > INIT_LENGTH) {
             resize(item.length >> 1);
         }
-        indexFront = addInCircular(indexFront, 1);
-        return item[indexFront];
+        return temp;
     }
 
     public T removeLast() {
@@ -66,11 +67,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
         size -= 1;
-        if(size < item.length >> 2){
+        indexLast = subInCircular(indexLast, 1);
+        T temp = item[indexLast];
+        if(size < item.length >> 2 && item.length > INIT_LENGTH) {
             resize(item.length >> 1);
         }
-        indexLast = subInCircular(indexLast, 1);
-        return item[indexLast];
+        return temp;
     }
 
     public T get(int index) {
@@ -120,7 +122,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         @Override
         public boolean hasNext() {
-            return currentPosition != indexLast;
+            return addInCircular(currentPosition, 1) != indexLast;
         }
 
         @Override
