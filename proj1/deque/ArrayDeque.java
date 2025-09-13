@@ -130,7 +130,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            T var = get(currentPosition);
+            T var = item[currentPosition];
             currentPosition = addInCircular(currentPosition, 1);
             return var;
         }
