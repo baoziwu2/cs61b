@@ -54,6 +54,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
         size -= 1;
+        if(size < item.length >> 2){
+            resize(item.length >> 1);
+        }
         indexFront = addInCircular(indexFront, 1);
         return item[indexFront];
     }
@@ -63,6 +66,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
         size -= 1;
+        if(size < item.length >> 2){
+            resize(item.length >> 1);
+        }
         indexLast = subInCircular(indexLast, 1);
         return item[indexLast];
     }
