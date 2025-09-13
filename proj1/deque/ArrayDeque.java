@@ -3,137 +3,90 @@ package deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
-    private static final int INIT_LENGTH = 8;
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
+    private T[] array;
 
-    private int size;
-    private int indexFront, indexLast; // 指针指向下一个元素放置的位置
-    private T[] item;
+    private int head = 0, tail = 0;
+    private int size = 0, capacity = 8;
 
+    @SuppressWarnings("unchecked")
     public ArrayDeque() {
-        size = 0;
-        item = (T[]) new Object[INIT_LENGTH];
-        indexFront = INIT_LENGTH / 2;
-        indexLast = indexFront + 1;
+        array = (T[]) new Object[capacity];
     }
 
-    private int addInCircular(int pointer, int var) {
-        if (pointer + var >= item.length) {
-            pointer -= item.length;
+    private void resize(int newCapacity) {
+        T[] newArray = (T[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newArray[i] = array[(head + i) % capacity];
         }
-        return pointer + var;
-    }
-
-    private int subInCircular(int pointer, int var) {
-        if (pointer - var < 0) {
-            pointer += item.length;
-        }
-        return pointer - var;
-    }
-
-    public void addFirst(T var) {
-        if (size == item.length) {
-            resize(item.length << 1);
-        }
-        item[indexFront] = var;
-        indexFront = subInCircular(indexFront, 1);
-        size += 1;
-    }
-
-    public void addLast(T var) {
-        if (size == item.length) {
-            resize(item.length << 1);
-        }
-        item[indexLast] = var;
-        indexLast = addInCircular(indexLast, 1);
-        size += 1;
-    }
-
-    public T removeFirst() {
-        if (size == 0) {
-            return null;
-        }
-        size -= 1;
-        indexFront = addInCircular(indexFront, 1);
-        T temp = item[indexFront];
-        if (size < item.length >> 2 && item.length > INIT_LENGTH) {
-            resize(item.length >> 1);
-        }
-        return temp;
-    }
-
-    public T removeLast() {
-        if (size == 0) {
-            return null;
-        }
-        size -= 1;
-        indexLast = subInCircular(indexLast, 1);
-        T temp = item[indexLast];
-        if (size < item.length >> 2 && item.length > INIT_LENGTH) {
-            resize(item.length >> 1);
-        }
-        return temp;
-    }
-
-    public T get(int index) {
-        if (index > size) {
-            return null;
-        }
-        return item[addInCircular(indexFront, index + 1)];
+        array = newArray;
+        head = 0;
+        tail = size;
+        capacity = newCapacity;
     }
 
     public int size() {
         return size;
     }
 
+    public void addFirst(T data) {
+        head = (head - 1 + capacity) % capacity;
+        array[head] = data;
+
+        size++;
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+    }
+
+    public void addLast(T data) {
+        array[tail] = data;
+        tail = (tail + 1) % capacity;
+
+        size++;
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+    }
+
     public void printDeque() {
-        for (int i = addInCircular(indexFront, 1); i != indexLast; i = addInCircular(i, 1)) {
-            System.out.println(item[i]);
+        for (int i = head; i != tail; i = (i + 1) % capacity) {
+            System.out.print(array[i] + " ");
         }
-        System.out.println();
     }
 
-    private void resize(int newSize) {
-        T[] temp = (T[]) new Object[newSize];
-        int current = addInCircular(indexFront, 1);
-
-        for (int i = 0; i < size; ++i) {
-            temp[i] = item[current];
-            current = addInCircular(current, 1);
+    public T removeFirst() {
+        if (isEmpty()) {
+            return null;
         }
+        T data = array[head];
+        array[head] = null;
+        head = (head + 1) % capacity;
 
-        item = temp;
-
-        indexFront = newSize - 1;
-        indexLast = size;
+        size--;
+        if (size * 2 < capacity && capacity > 8) {
+            resize(capacity / 2);
+        }
+        return data;
     }
 
-    @Override
-    public Iterator<T> iterator() {
-        return new ArrayDequeIterator();
+    public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
+        tail = (tail - 1 + capacity) % capacity;
+        T data = array[tail];
+        array[tail] = null;
+
+        size--;
+        if (size * 2 < capacity && capacity > 8) {
+            resize(capacity / 2);
+        }
+        return data;
     }
 
-    private class ArrayDequeIterator implements Iterator<T> {
-        private int currentPosition;
-
-        ArrayDequeIterator() {
-            currentPosition = 0;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return currentPosition != size - 1;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-            T var = get(currentPosition);
-            currentPosition += 1;
-            return var;
-        }
+    public T get(int index) {
+        return array[(head + index) % capacity];
     }
 
     @Override
@@ -158,5 +111,29 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             }
         }
         return true;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int current = head;
+
+        @Override
+        public boolean hasNext() {
+            return current != tail;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            T item = array[current];
+            current = (current + 1) % capacity;
+            return item;
+        }
     }
 }
