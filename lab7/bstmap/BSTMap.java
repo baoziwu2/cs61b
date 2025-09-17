@@ -55,7 +55,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         return root.subTreeSize;
     }
 
-    public int size(BSTNode node) {
+    private int size(BSTNode node) {
         return node == null ? 0 : node.subTreeSize;
     }
 
@@ -64,7 +64,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         root = put(key, value, root);
     }
 
-    public BSTNode put(K key, V value, BSTNode node) {
+    private BSTNode put(K key, V value, BSTNode node) {
         if(node == null) return new BSTNode(key, value);
         int cmp = key.compareTo(node.key);
         if(cmp < 0) node.leftSon = put(key, value, node.leftSon);
@@ -107,5 +107,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             if(!hasNext()) throw new NoSuchElementException();
             throw new UnsupportedOperationException("Not supported yet."); // TODO
         }
+    }
+
+    public void printInOrder() {
+        // TODO
     }
 }
