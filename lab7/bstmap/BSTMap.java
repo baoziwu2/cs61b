@@ -3,10 +3,7 @@ package bstmap;
 import edu.princeton.cs.algs4.BST;
 import org.w3c.dom.Node;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     private BSTNode root;
@@ -93,20 +90,23 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     public V remove(K key) {
         if(key == null) throw new IllegalArgumentException("key cannot be null");
         V value = get(key);
+        if(value == null) return null;
         keySet.remove(key);
         root = remove(key, root);
-        keySet.remove(key);
         return value;
     }
 
     public V remove(K key, V value){
-        if (key == null) throw new IllegalArgumentException("");
-        if (value != get(key)) return value;
+        if (key == null) throw new IllegalArgumentException("key cannot be null");
+        V valueInMap = get(key);
+        if (valueInMap == null || !valueInMap.equals(value)) {
+            return null;
+        }
         return remove(key);
     }
 
-    private BSTNode remove(K key, BSTNode node) { // TODO
-        if(key == null) throw new IllegalArgumentException("key cannot be null");
+    private BSTNode remove(K key, BSTNode node) {
+        if(node == null) return null;
         int cmp = key.compareTo(node.key);
         if(cmp  < 0) node.leftSon = remove(key, node.leftSon);
         else if(cmp > 0) node.rightSon = remove(key, node.rightSon);
@@ -141,32 +141,45 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     }
 
     private class IteratorOfKey implements Iterator<K> {
-        private BSTNode node;
-        public IteratorOfKey(BSTNode node) {
-            this.node = node;
+        private Stack<BSTNode> stack;
+
+        public IteratorOfKey(BSTNode root) {
+            stack = new Stack<>();
+            pushLeft(root);
+        }
+
+        private void pushLeft(BSTNode node) {
+            while (node != null) {
+                stack.push(node);
+                node = node.leftSon;
+            }
         }
 
         @Override
         public boolean hasNext() {
-            return node != null;
+            return !stack.isEmpty();
         }
 
+        @Override
         public K next() {
-            if(!hasNext()) throw new NoSuchElementException();
-            K minKey = searchMinNode(node).key;
-            node = BSTMap.this.remove(minKey, node);
-            return minKey;
+            if (!hasNext()) {
+                throw new NoSuchElementException("The map has no more elements.");
+            }
+            BSTNode nextNode = stack.pop();
+            K keyToReturn = nextNode.key;
+
+            if (nextNode.rightSon != null) {
+                pushLeft(nextNode.rightSon);
+            }
+
+            return keyToReturn;
         }
     }
 
     public void printInOrder() {
-        printInOrderWithNode(root);
-    }
-
-    void printInOrderWithNode(BSTNode node) {
-        if(node == null) return ;
-        printInOrderWithNode(node.leftSon);
-        System.out.println("key: " + node.key + " value: " + node.value);
-        printInOrderWithNode(node.rightSon);
+        System.out.println("Printing BSTMap in order:");
+        for (K key : this) {
+            System.out.println("key: " + key + ", value: " + get(key));
+        }
     }
 }
