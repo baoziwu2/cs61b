@@ -78,7 +78,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         return node;
     }
 
-    void sizeUpate(BSTNode node) {
+    private void sizeUpate(BSTNode node) {
         node.subTreeSize = size(node.leftSon) + size(node.rightSon) + 1;
     }
 
@@ -123,12 +123,12 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         return node;
     }
 
-    BSTNode searchMinNode(BSTNode node) {
+    private BSTNode searchMinNode(BSTNode node) {
         if(node.leftSon == null) return node;
         return searchMinNode(node.leftSon);
     }
 
-    BSTNode removeMin(BSTNode node) {
+    private BSTNode removeMin(BSTNode node) {
         if(node.leftSon == null) return node.rightSon;
         node.leftSon = removeMin(node.leftSon);
         sizeUpate(node);
