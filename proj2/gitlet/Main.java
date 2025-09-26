@@ -1,5 +1,7 @@
 package gitlet;
 
+import java.util.Arrays;
+
 import static gitlet.ErrorHandling.messageAndExit;
 
 /** Driver class for Gitlet, a subset of the Git version-control system.
