@@ -1,5 +1,7 @@
 package gitlet;
 
+import static gitlet.ErrorHandling.messageAndExit;
+
 /** Driver class for Gitlet, a subset of the Git version-control system.
  *  @author TODO
  */
@@ -15,12 +17,48 @@ public class Main {
 
         switch(command) {
             case INIT:
-                // TODO: handle the `init` command
+                Repository.initRepository();
                 break;
             case ADD:
-                // TODO: handle the `add [filename]` command
+                String fileNameToAdd = args[1];
+                Repository.addFile(fileNameToAdd);
                 break;
-            // TODO: FILL THE REST IN
+            case COMMIT:
+                String commitMessage = args[1];
+                Repository.commit(commitMessage);
+                break;
+            case LOG:
+                Repository.log();
+                break;
+            case GLOBAL_LOG:
+                Repository.globalLog();
+                break;
+            case FIND:
+                messageAndExit("Not yet implemented.");
+                break;
+            case CHECKOUT:
+                messageAndExit("Not yet implemented.");
+                break;
+            case BRANCH:
+                messageAndExit("Not yet implemented.");
+                break;
+            case RM_BRANCH:
+                messageAndExit("Not yet implemented.");
+                break;
+            case STATUS:
+                messageAndExit("Not yet implemented.");
+                break;
+            case RM:
+                messageAndExit("Not yet implemented.");
+                break;
+            case RESET:
+                messageAndExit("Not yet implemented.");
+                break;
+            case MERGE:
+                messageAndExit("Not yet implemented.");
+                break;
+            default:
+                messageAndExit("No command with that name exists.");
         }
     }
 }
