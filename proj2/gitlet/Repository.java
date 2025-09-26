@@ -109,10 +109,10 @@ public class Repository {
 
         Commit initialCommit = new Commit("initial commit", null, new Date(0L), new TreeMap<>());
         String commitId = Utils.sha1(serialize(initialCommit));
-        File commitFile = new File(OBJECTS_DIR, commitId);
+        File commitFile = Utils.join(OBJECTS_DIR, commitId);
         Utils.writeObject(commitFile, initialCommit);
 
-        File masterBranchFile = new File(HEADS_DIR, "master");
+        File masterBranchFile = Utils.join(HEADS_DIR, "master");
         Utils.writeContents(masterBranchFile, commitId);
 
         String headContent = "ref: refs/heads/master";
@@ -225,10 +225,10 @@ public class Repository {
             try {
                 Commit commit = getCommitById(fileName);
                 if (commitMessage.equals(commit.getMessage())) { // Simple check for matching message
-                    continue;
+                    matchFound = true;
+                    System.out.println(fileName);
                 }
-                matchFound = true;
-                System.out.println(fileName);
+
             } catch (Exception e) {
                 // This object is not a commit, so we ignore it.
             }

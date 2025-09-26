@@ -21,9 +21,10 @@ public class CommandValidator {
 
     public static void validateArgs(StandardCommand command, String[] args) {
         if (command == StandardCommand.CHECKOUT) {
-           if(validateForCheckOut(args)) {
+           if(!validateForCheckOut(args)) {
                messageAndExit("Incorrect operands.");
            }
+           return ;
         }
 
         if (args.length != command.getStandardArgs()) {
