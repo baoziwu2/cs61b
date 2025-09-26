@@ -52,7 +52,7 @@ public class Main {
                 messageAndExit("Not yet implemented.");
                 break;
             case RM:
-                messageAndExit("Not yet implemented.");
+                Repository.remove(args[1]);
                 break;
             case RESET:
                 messageAndExit("Not yet implemented.");
