@@ -1,9 +1,8 @@
 package gitlet;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static gitlet.Utils.*;
 import static gitlet.ErrorHandling.*;
@@ -158,22 +157,32 @@ public class Repository {
         stagingArea.save();
     }
 
+    private static String formatDate(Date date) {
+        // Match the expected format: EEE MMM d HH:mm:ss yyyy Z, in US locale
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);
+        return sdf.format(date);
+    }
+
     public static void log() {
         String currentId = getHeadCommitId();
         while (currentId != null) {
             Commit currentCommit = getCommitById(currentId);
-            System.out.println("===");
-            System.out.println("commit " + currentId);
-            if (currentCommit.isMergeCommit()) {
-                System.out.println("Merge: " + currentCommit.getParentId().substring(0, 7) + " " +
-                        currentCommit.secondParentId.substring(0, 7));
-            }
-            System.out.println("Date: " + currentCommit.getDate());
-            System.out.println(currentCommit.getMessage());
-            System.out.println();
+            printLogMessage(currentId, currentCommit);
 
             currentId = currentCommit.getParentId();
         }
+    }
+
+    private static void printLogMessage(String currentId, Commit currentCommit) {
+        System.out.println("===");
+        System.out.println("commit " + currentId);
+        if (currentCommit.isMergeCommit()) {
+            System.out.println("Merge: " + currentCommit.getParentId().substring(0, 7) + " " +
+                    currentCommit.secondParentId.substring(0, 7));
+        }
+        System.out.println("Date: " + formatDate(currentCommit.getDate()));
+        System.out.println(currentCommit.getMessage());
+        System.out.println();
     }
 
     public static void globalLog() {
@@ -184,18 +193,32 @@ public class Repository {
                 if (commit.getMessage() == null) { // Simple check if it's a valid commit
                     continue;
                 }
-                System.out.println("===");
-                System.out.println("commit " + fileName);
-                if (commit.isMergeCommit()) {
-                    System.out.println("Merge: " + commit.getParentId().substring(0, 7) + " " +
-                            commit.secondParentId.substring(0, 7));
-                }
-                System.out.println("Date: " + commit.getDate());
-                System.out.println(commit.getMessage());
-                System.out.println();
+                printLogMessage(fileName, commit);
             } catch (Exception e) {
                 // This object is not a commit, so we ignore it.
             }
         }
     }
+
+    public static void find(String commitMessage) {
+        List<String> objectFiles = Utils.plainFilenamesIn(OBJECTS_DIR);
+        boolean matchFound = false;
+        for (String fileName : objectFiles) {
+            try {
+                Commit commit = getCommitById(fileName);
+                if (commitMessage.equals(commit.getMessage())) { // Simple check for matching message
+                    continue;
+                }
+                matchFound = true;
+                System.out.println(fileName);
+            } catch (Exception e) {
+                // This object is not a commit, so we ignore it.
+            }
+        }
+
+        if(!matchFound) {
+            System.out.println("Found no commit with that message.");
+        }
+    }
 }
+

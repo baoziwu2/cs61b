@@ -1,38 +1,38 @@
 # test_basic_commit.in
-# 引入预定义的正则表达式，用于匹配动态内容（如 commit ID 和日期）
+# Include predefined regular expressions for matching dynamic content (e.g., commit ID and date)
 I definitions.inc
 
-# 标题：测试基本的 init, add, commit, log 流程
-# > 表示执行命令, <<< 表示预期输出的开始, <<<* 表示使用正则表达式匹配输出
+# Title: Test basic flow of init, add, commit, and log
+# ">" executes a command, "<<<" marks start of expected output, and "<<<*" uses regex to match output
 
-# 1. 初始化仓库，预期没有输出
+# 1. Initialize the repository (no output expected)
 > init
 <<<
-# 验证 .gitlet 目录是否已创建
+# Verify that the .gitlet directory was created
 E .gitlet
 
-# 2. 在工作目录中创建一个新文件 wug.txt
-# + 表示从 testing/src 目录复制文件
+# 2. Create a new file wug.txt in the working directory
+# "+" copies a file from testing/src into the working directory
 + wug.txt wug.txt
 
-# 3. 添加文件到暂存区，预期没有输出
+# 3. Add the file to the staging area (no output expected)
 > add wug.txt
 <<<
 
-# 4. 提交文件，预期没有输出
+# 4. Commit the file (no output expected)
 > commit "initial commit of wug.txt"
 <<<
 
-# 5. 再次修改文件内容
+# 5. Modify the file content
 + wug.txt notwug.txt
 
-# 6. 再次添加并提交
+# 6. Add and commit again
 > add wug.txt
 <<<
 > commit "changed wug.txt to notwug"
 <<<
 
-# 7. 执行 log 命令，并验证输出格式
+# 7. Run log and verify the output format
 > log
 ===
 ${COMMIT_HEAD}

@@ -34,7 +34,7 @@ public class Main {
                 Repository.globalLog();
                 break;
             case FIND:
-                messageAndExit("Not yet implemented.");
+                Repository.find(args[1]);
                 break;
             case CHECKOUT:
                 messageAndExit("Not yet implemented.");
