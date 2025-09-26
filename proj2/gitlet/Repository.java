@@ -151,7 +151,7 @@ public class Repository {
         checkCommitMessage(message);
 
         Commit currentCommit = getCurrentCommit();
-        Map<String, String> newTrackFiles = new TreeMap<>(currentCommit.getTrackedFiles());
+        TreeMap<String, String> newTrackFiles = new TreeMap<>(currentCommit.getTrackedFiles());
 
         for (String fileName : stagingArea.getFileForAddition().keySet()) {
             String blobId = stagingArea.getFileForAddition().get(fileName);

@@ -5,6 +5,7 @@ package gitlet;
 import java.io.Serializable;
 import java.util.Date; // TODO: You'll likely use this in this class
 import java.util.Map;
+import java.util.TreeMap;
 
 /** Represents a gitlet commit object.
  *  TODO: It's a good idea to give a description here of what else this Class
@@ -27,7 +28,7 @@ public class Commit implements Serializable {
     String secondParentId; // for merge commit
     TreeMap<String, String> trackedFiles = new TreeMap<>(); // Key "FileName". Value "SHA-1 ID"
 
-    public Commit(String message, String parentId, Date date, Map<String, String> trackedFiles) {
+    public Commit(String message, String parentId, Date date, TreeMap<String, String> trackedFiles) {
         this.message = message;
         this.date = date;
         this.parentId = parentId;

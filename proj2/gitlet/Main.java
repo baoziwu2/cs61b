@@ -37,7 +37,8 @@ public class Main {
                 Repository.find(args[1]);
                 break;
             case CHECKOUT:
-                messageAndExit("Not yet implemented.");
+                String[] cmdArgs = Arrays.copyOfRange(args, 1, args.length);
+                Repository.checkOut(cmdArgs);
                 break;
             case BRANCH:
                 messageAndExit("Not yet implemented.");
