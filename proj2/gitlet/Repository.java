@@ -220,5 +220,35 @@ public class Repository {
             System.out.println("Found no commit with that message.");
         }
     }
+
+    public static void remove(String fileName) {
+        StagingArea stagingArea = StagingArea.load();
+        Commit currentCommit = getCurrentCommit();
+
+        boolean isTracked = currentCommit.getTrackFiles().containsKey(fileName);
+        boolean isStaged = stagingArea.getFileForAddition().containsKey(fileName);
+
+        if (!isTracked && !isStaged) {
+            messageAndExit("No reason to remove the file.");
+        }
+
+        if (isStaged) {
+            stagingArea.unstage(fileName);
+        }
+
+        if (isTracked) {
+            stagingArea.remove(fileName);
+            File fileInCWD = join(CWD, fileName);
+            if (fileInCWD.exists()) {
+                Utils.restrictedDelete(fileName);
+            }
+        }
+
+        stagingArea.save();
+    }
+
+    public static void checkOut(String ...args) {
+
+    }
 }
 

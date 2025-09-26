@@ -8,7 +8,15 @@ public class CommandValidator {
     public static final File GITLET_DIR = new File(".gitlet");
 
     private static boolean validateForCheckOut(String[] args) {
-        return false; // TODO
+        boolean valid = false;
+        if(args.length == 2) {
+            valid = true;
+        } else if(args.length == 3) {
+            valid = args[1].equals("--");
+        } else if(args.length == 4) {
+            valid = args[2].equals("--");
+        }
+        return valid;
     }
 
     public static void validateArgs(StandardCommand command, String[] args) {

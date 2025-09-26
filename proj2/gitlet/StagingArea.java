@@ -50,7 +50,7 @@ public class StagingArea implements Serializable {
                 return sa != null ? sa : new StagingArea();
             }
         } catch (RuntimeException e) {
-            // 文件损坏或不兼容，回退为空暂存区
+
         }
         return new StagingArea();
     }
