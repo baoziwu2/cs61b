@@ -78,6 +78,25 @@ public class Repository {
         return getCommitById(headCommitId);
     }
 
+    public static boolean doesBranchExist(String branch) {
+        File branchFile = Utils.join(HEADS_DIR, branch);
+        return branchFile.exists();
+    }
+
+    public static String getCurrentBranch() {
+        String headContent = Utils.readContentsAsString(HEAD_FILE);
+        return headContent.split(": ")[1].substring("refs/heads/".length());
+    }
+
+    public static Commit getCommitByBranch(String branch) {
+        if (!doesBranchExist(branch)) {
+            messageAndExit("No such branch exists.");
+        }
+        File branchFile = Utils.join(HEADS_DIR, branch);
+        String commitId = Utils.readContentsAsString(branchFile);
+        return getCommitById(commitId);
+    }
+
     public static void initRepository() {
         checkGitletEmpty(GITLET_DIR);
 
@@ -110,7 +129,7 @@ public class Repository {
         byte[] fileContent = readContents(fileForAddition);
         String blobId = sha1(fileContent);
 
-        String trackedBlobId = currentCommit.getTrackFiles().get(fileName);
+        String trackedBlobId = currentCommit.getTrackedFiles().get(fileName);
         if (blobId.equals(trackedBlobId)) {
             stagingArea.clearRemoval(fileName);
             stagingArea.save();
@@ -132,14 +151,14 @@ public class Repository {
         checkCommitMessage(message);
 
         Commit currentCommit = getCurrentCommit();
-        TreeMap<String, String> newTrackFiles = new TreeMap<>(currentCommit.getTrackFiles());
+        Map<String, String> newTrackFiles = new TreeMap<>(currentCommit.getTrackedFiles());
 
         for (String fileName : stagingArea.getFileForAddition().keySet()) {
             String blobId = stagingArea.getFileForAddition().get(fileName);
             newTrackFiles.put(fileName, blobId);
         }
 
-        for (String fileName : stagingArea.getFileForRemove()) {
+        for (String fileName : stagingArea.getFileForRemoval()) {
             newTrackFiles.remove(fileName);
         }
 
@@ -153,8 +172,7 @@ public class Repository {
         File branchFile = Utils.join(GITLET_DIR, branchPath);
         Utils.writeContents(branchFile, newCommitId);
 
-        stagingArea.clear();
-        stagingArea.save();
+        StagingArea.clear();
     }
 
     private static String formatDate(Date date) {
@@ -225,7 +243,7 @@ public class Repository {
         StagingArea stagingArea = StagingArea.load();
         Commit currentCommit = getCurrentCommit();
 
-        boolean isTracked = currentCommit.getTrackFiles().containsKey(fileName);
+        boolean isTracked = currentCommit.getTrackedFiles().containsKey(fileName);
         boolean isStaged = stagingArea.getFileForAddition().containsKey(fileName);
 
         if (!isTracked && !isStaged) {
@@ -248,7 +266,8 @@ public class Repository {
     }
 
     public static void checkOut(String ...args) {
-
+        CheckOutCommand.execute(args);
     }
 }
+
 

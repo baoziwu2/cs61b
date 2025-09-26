@@ -10,29 +10,29 @@ import static gitlet.Repository.STAGING_FILE;
 
 public class StagingArea implements Serializable {
     Map<String, String> fileForAddition; // filename -> blobId
-    Set<String> fileForRemove; // filename
+    Set<String> fileForRemoval; // filename
 
     public StagingArea() {
         fileForAddition = new HashMap<>();
-        fileForRemove = new HashSet<>();
+        fileForRemoval = new HashSet<>();
     }
 
-    public void clear() {
-        fileForAddition.clear();
-        fileForRemove.clear();
+    public static void clear() {
+        StagingArea emptyArea = new StagingArea();
+        emptyArea.save();
     }
 
     public void add(String fileName, String blobId) {
         fileForAddition.put(fileName, blobId);
-        fileForRemove.remove(fileName);
+        fileForRemoval.remove(fileName);
     }
 
     public void clearRemoval(String fileName) {
-        fileForRemove.remove(fileName); // cancel removal
+        fileForRemoval.remove(fileName); // cancel removal
     }
 
     public boolean isEmpty() {
-        return fileForAddition.isEmpty() && fileForRemove.isEmpty();
+        return fileForAddition.isEmpty() && fileForRemoval.isEmpty();
     }
 
     public void unstage(String fileName) {
@@ -40,7 +40,7 @@ public class StagingArea implements Serializable {
     }
 
     public void remove(String fileName) {
-        fileForRemove.add(fileName); // update the removal set
+        fileForRemoval.add(fileName); // update the removal set
     }
 
     public static StagingArea load() {
@@ -63,7 +63,7 @@ public class StagingArea implements Serializable {
         return fileForAddition;
     }
 
-    public Set<String> getFileForRemove() {
-        return fileForRemove;
+    public Set<String> getFileForRemoval() {
+        return fileForRemoval;
     }
 }
