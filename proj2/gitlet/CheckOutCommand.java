@@ -8,9 +8,9 @@ import java.util.Map;
 public class CheckOutCommand {
     public static void execute(String... args) { // args exclude "checkout"
         int len = args.length;
-        if(len == 1) { // checkout branch name
+        if (len == 1) { // checkout branch name
             checkOutBranch(args[0]);
-        } else if(len == 2) { // checkout -- [file name]
+        } else if (len == 2) { // checkout -- [file name]
             checkOutFileInHead(args[1]);
         } else { // len == 3, checkout [commit id] -- [file name]
             checkOutFileInCommit(args[0], args[2]);
@@ -61,7 +61,7 @@ public class CheckOutCommand {
         Map<String, String> targetFiles = targetCommit.getTrackedFiles();
         Map<String, String> currentFiles = currentCommit.getTrackedFiles();
 
-        for(Map.Entry<String, String> entry : targetFiles.entrySet()) {
+        for (Map.Entry<String, String> entry : targetFiles.entrySet()) {
             String fileName = entry.getKey();
             String blobId = entry.getValue();
 
@@ -71,8 +71,8 @@ public class CheckOutCommand {
             Utils.writeContents(fileInCWD, fileContent);
         }
 
-        for(String fileName : currentFiles.keySet()) {
-            if(!targetFiles.containsKey(fileName)) {
+        for (String fileName : currentFiles.keySet()) {
+            if (!targetFiles.containsKey(fileName)) {
                 Utils.restrictedDelete(fileName);
             }
         }

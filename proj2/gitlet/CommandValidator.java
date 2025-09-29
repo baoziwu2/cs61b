@@ -1,6 +1,7 @@
 package gitlet;
 
 import java.io.File;
+
 import static gitlet.ErrorHandling.*;
 
 // handle the command check and error throw
@@ -9,11 +10,11 @@ public class CommandValidator {
 
     private static boolean validateForCheckOut(String[] args) {
         boolean valid = false;
-        if(args.length == 2) {
+        if (args.length == 2) {
             valid = true;
-        } else if(args.length == 3) {
+        } else if (args.length == 3) {
             valid = args[1].equals("--");
-        } else if(args.length == 4) {
+        } else if (args.length == 4) {
             valid = args[2].equals("--");
         }
         return valid;
@@ -21,10 +22,10 @@ public class CommandValidator {
 
     public static void validateArgs(StandardCommand command, String[] args) {
         if (command == StandardCommand.CHECKOUT) {
-           if(!validateForCheckOut(args)) {
-               messageAndExit("Incorrect operands.");
-           }
-           return ;
+            if (!validateForCheckOut(args)) {
+                messageAndExit("Incorrect operands.");
+            }
+            return;
         }
 
         if (args.length != command.getStandardArgs()) {
@@ -33,7 +34,7 @@ public class CommandValidator {
     }
 
     public static void validateInputEmpty(String[] args) {
-        if(args.length == 0) {
+        if (args.length == 0) {
             messageAndExit("Please enter a command.");
         }
     }
@@ -49,7 +50,7 @@ public class CommandValidator {
     }
 
     public static void validateRepoInitialized(StandardCommand command) {
-        if(command != StandardCommand.INIT && !GITLET_DIR.exists()) {
+        if (command != StandardCommand.INIT && !GITLET_DIR.exists()) {
             messageAndExit("Not in an initialized Gitlet directory.");
         }
     }

@@ -1,7 +1,6 @@
 package gitlet;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static gitlet.Utils.*;
@@ -158,7 +157,7 @@ public class Repository {
             newTrackFiles.put(fileName, blobId);
         }
 
-        for (String fileName : stagingArea.getFileForRemoval()) {
+        for (String fileName : stagingArea.getFilesForRemoval()) {
             newTrackFiles.remove(fileName);
         }
 
@@ -175,47 +174,12 @@ public class Repository {
         StagingArea.clear();
     }
 
-    private static String formatDate(Date date) {
-        // Match the expected format: EEE MMM d HH:mm:ss yyyy Z, in US locale
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);
-        return sdf.format(date);
-    }
-
     public static void log() {
-        String currentId = getHeadCommitId();
-        while (currentId != null) {
-            Commit currentCommit = getCommitById(currentId);
-            printLogMessage(currentId, currentCommit);
-
-            currentId = currentCommit.getParentId();
-        }
-    }
-
-    private static void printLogMessage(String currentId, Commit currentCommit) {
-        System.out.println("===");
-        System.out.println("commit " + currentId);
-        if (currentCommit.isMergeCommit()) {
-            System.out.println("Merge: " + currentCommit.getParentId().substring(0, 7) + " " +
-                    currentCommit.secondParentId.substring(0, 7));
-        }
-        System.out.println("Date: " + formatDate(currentCommit.getDate()));
-        System.out.println(currentCommit.getMessage());
-        System.out.println();
+        Display.log();
     }
 
     public static void globalLog() {
-        List<String> objectFiles = Utils.plainFilenamesIn(OBJECTS_DIR);
-        for (String fileName : objectFiles) {
-            try {
-                Commit commit = getCommitById(fileName);
-                if (commit.getMessage() == null) { // Simple check if it's a valid commit
-                    continue;
-                }
-                printLogMessage(fileName, commit);
-            } catch (Exception e) {
-                // This object is not a commit, so we ignore it.
-            }
-        }
+       Display.globalLog();
     }
 
     public static void find(String commitMessage) {
@@ -234,7 +198,7 @@ public class Repository {
             }
         }
 
-        if(!matchFound) {
+        if (!matchFound) {
             System.out.println("Found no commit with that message.");
         }
     }
@@ -265,8 +229,11 @@ public class Repository {
         stagingArea.save();
     }
 
-    public static void checkOut(String ...args) {
+    public static void checkOut(String... args) {
         CheckOutCommand.execute(args);
+    }
+    public static void stauts() {
+        Display.status();
     }
 }
 

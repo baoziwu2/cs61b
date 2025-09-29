@@ -4,12 +4,15 @@ import java.util.Arrays;
 
 import static gitlet.ErrorHandling.messageAndExit;
 
-/** Driver class for Gitlet, a subset of the Git version-control system.
- *  @author TODO
+/**
+ * Driver class for Gitlet, a subset of the Git version-control system.
+ *
+ * @author azbnbnotfound
  */
 public class Main {
-    /** Usage: java gitlet.Main ARGS, where ARGS contains
-     *  <COMMAND> <OPERAND1> <OPERAND2> ... 
+    /**
+     * Usage: java gitlet.Main ARGS, where ARGS contains
+     * <COMMAND> <OPERAND1> <OPERAND2> ...
      */
     public static void main(String[] args) {
         CommandValidator.validateInputEmpty(args);
@@ -17,7 +20,7 @@ public class Main {
         CommandValidator.validateRepoInitialized(command);
         CommandValidator.validateArgs(command, args);
 
-        switch(command) {
+        switch (command) {
             case INIT:
                 Repository.initRepository();
                 break;
@@ -49,7 +52,7 @@ public class Main {
                 messageAndExit("Not yet implemented.");
                 break;
             case STATUS:
-                messageAndExit("Not yet implemented.");
+                Repository.stauts();
                 break;
             case RM:
                 Repository.remove(args[1]);

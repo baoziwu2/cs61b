@@ -63,7 +63,8 @@ public class StagingArea implements Serializable {
         return fileForAddition;
     }
 
-    public Set<String> getFileForRemoval() {
+    public Set<String> getFilesForRemoval() {
         return fileForRemoval;
     }
 }
+
