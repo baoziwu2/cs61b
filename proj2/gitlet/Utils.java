@@ -1,17 +1,9 @@
 package gitlet;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -35,6 +27,16 @@ class Utils {
     static final int UID_LENGTH = 40;
 
     /* SHA-1 HASH VALUES. */
+    /**
+     * Filter out all but plain files.
+     */
+    private static final FilenameFilter PLAIN_FILES =
+            new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return new File(dir, name).isFile();
+                }
+            };
 
     /**
      * Returns the SHA-1 hash of the concatenation of VALS, which may
@@ -62,6 +64,8 @@ class Utils {
         }
     }
 
+    /* FILE DELETION */
+
     /**
      * Returns the SHA-1 hash of the concatenation of the strings in
      * VALS.
@@ -69,8 +73,6 @@ class Utils {
     static String sha1(List<Object> vals) {
         return sha1(vals.toArray(new Object[vals.size()]));
     }
-
-    /* FILE DELETION */
 
     /**
      * Deletes FILE if it exists and is not a directory.  Returns true
@@ -89,6 +91,8 @@ class Utils {
         }
     }
 
+    /* READING AND WRITING FILE CONTENTS */
+
     /**
      * Deletes the file named FILE if it exists and is not a directory.
      * Returns true if FILE was deleted, and false otherwise.  Refuses
@@ -98,8 +102,6 @@ class Utils {
     static boolean restrictedDelete(String file) {
         return restrictedDelete(new File(file));
     }
-
-    /* READING AND WRITING FILE CONTENTS */
 
     /**
      * Return the entire contents of FILE as a byte array.  FILE must
@@ -171,25 +173,14 @@ class Utils {
         }
     }
 
+    /* DIRECTORIES */
+
     /**
      * Write OBJ to FILE.
      */
     static void writeObject(File file, Serializable obj) {
         writeContents(file, serialize(obj));
     }
-
-    /* DIRECTORIES */
-
-    /**
-     * Filter out all but plain files.
-     */
-    private static final FilenameFilter PLAIN_FILES =
-            new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return new File(dir, name).isFile();
-                }
-            };
 
     /**
      * Returns a list of the names of all plain files in the directory DIR, in

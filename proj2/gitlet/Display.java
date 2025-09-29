@@ -27,8 +27,8 @@ public class Display {
         System.out.println("===");
         System.out.println("commit " + currentId);
         if (currentCommit.isMergeCommit()) {
-            System.out.println("Merge: " + currentCommit.getParentId().substring(0, 7) + " " +
-                    currentCommit.secondParentId.substring(0, 7));
+            System.out.println("Merge: " + currentCommit.getParentId().substring(0, 7) + " "
+                    + currentCommit.secondParentId.substring(0, 7));
         }
         System.out.println("Date: " + formatDate(currentCommit.getDate()));
         System.out.println(currentCommit.getMessage());
@@ -147,7 +147,7 @@ public class Display {
         List<String> cwdFiles = Utils.plainFilenamesIn(CWD);
 
         if (cwdFiles != null) {
-           Set<String> untrackedFiles = new TreeSet<>();
+            Set<String> untrackedFiles = new TreeSet<>();
             for (String fileName : cwdFiles) {
                 if (!trackedFiles.containsKey(fileName) && !stagedFiles.containsKey(fileName)) {
                     untrackedFiles.add(fileName);

@@ -1,23 +1,22 @@
 package gitlet;
 
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
 
-import static gitlet.Utils.*;
 import static gitlet.ErrorHandling.*;
+import static gitlet.Utils.*;
 
-// TODO: any imports you need here
 
 /**
  * Represents a gitlet repository.
- *  TODO: It's a good idea to give a description here of what else this Class
- *  does at a high level.
+ * does at a high level.
  *
  * @author azbnbNotFound
  */
 public class Repository {
     /**
-     * TODO: add instance variables here.
      * List all instance variables of the Repository class here with a useful
      * comment above them describing what that variable represents and how that
      * variable is used. We've provided two examples for you.
@@ -179,7 +178,7 @@ public class Repository {
     }
 
     public static void globalLog() {
-       Display.globalLog();
+        Display.globalLog();
     }
 
     public static void find(String commitMessage) {
@@ -232,8 +231,24 @@ public class Repository {
     public static void checkOut(String... args) {
         CheckOutCommand.execute(args);
     }
-    public static void stauts() {
+
+    public static void status() {
         Display.status();
+    }
+
+    public static void createBranch(String branchName) {
+        checkBranchExist(branchName);
+        String headCommitId = getHeadCommitId();
+        File newBranchFile = Utils.join(HEADS_DIR, branchName);
+        Utils.writeContents(newBranchFile, headCommitId);
+    }
+
+    public static void removeBranch(String branchName) {
+        checkBranchExist(branchName);
+        checkForSameBranch(branchName);
+        String currentBranch = getCurrentBranch();
+        File branchFile = Utils.join(HEADS_DIR, branchName);
+        branchFile.delete();
     }
 }
 

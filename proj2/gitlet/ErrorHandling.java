@@ -3,6 +3,7 @@ package gitlet;
 import java.io.File;
 
 import static gitlet.Repository.CWD;
+import static gitlet.Repository.doesBranchExist;
 
 public class ErrorHandling {
     public static void messageAndExit(String message) {
@@ -38,6 +39,19 @@ public class ErrorHandling {
     public static void checkCommitMessage(String message) {
         if (message == null || message.isEmpty()) {
             messageAndExit("Please enter a commit message.");
+        }
+    }
+
+    public static void checkBranchExist(String branch) {
+        if (doesBranchExist(branch)) {
+           messageAndExit("A branch with that name already exists.");
+        }
+    }
+
+    public static void checkForSameBranch(String branch) {
+        String currentBranch = Repository.getCurrentBranch();
+        if (branch.equals(currentBranch)) {
+            messageAndExit("Cannot merge a branch with itself.");
         }
     }
 }

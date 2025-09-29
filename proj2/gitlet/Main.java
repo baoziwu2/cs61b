@@ -46,13 +46,13 @@ public class Main {
                 Repository.checkOut(cmdArgs);
                 break;
             case BRANCH:
-                messageAndExit("Not yet implemented.");
+                Repository.createBranch(args[1]);
                 break;
             case RM_BRANCH:
-                messageAndExit("Not yet implemented.");
+                Repository.removeBranch(args[1]);
                 break;
             case STATUS:
-                Repository.stauts();
+                Repository.status();
                 break;
             case RM:
                 Repository.remove(args[1]);
