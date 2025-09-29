@@ -187,7 +187,7 @@ public class Repository {
         for (String fileName : objectFiles) {
             try {
                 Commit commit = getCommitById(fileName);
-                if (commitMessage.equals(commit.getMessage())) { // Simple check for matching message
+                if (commitMessage.equals(commit.getMessage())) {
                     matchFound = true;
                     System.out.println(fileName);
                 }
@@ -244,7 +244,7 @@ public class Repository {
     }
 
     public static void removeBranch(String branchName) {
-        checkBranchExist(branchName);
+        checkBranchNotExist(branchName);
         checkForSameBranch(branchName);
         File branchFile = Utils.join(HEADS_DIR, branchName);
         branchFile.delete();

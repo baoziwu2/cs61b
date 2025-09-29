@@ -125,7 +125,8 @@ public class CheckOutCommand {
         return null;
     }
 
-    private static void checkOutFileInCommit(String commitId, String fileName) {
+    private static void checkOutFileInCommit(String commitId,
+                                             String fileName) {
         String fullCommitId = findFullCommitId(commitId);
         if (fullCommitId == null) {
             ErrorHandling.messageAndExit("No commit with that id exists.");

@@ -43,6 +43,12 @@ public class ErrorHandling {
     }
 
     public static void checkBranchExist(String branch) {
+        if (doesBranchExist(branch)) {
+            messageAndExit("A branch with that name already exists.");
+        }
+    }
+
+    public static void checkBranchNotExist(String branch) {
         if (!doesBranchExist(branch)) {
             messageAndExit("A branch with that name does not exist.");
         }

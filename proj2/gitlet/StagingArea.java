@@ -50,7 +50,7 @@ public class StagingArea implements Serializable {
                 return sa != null ? sa : new StagingArea();
             }
         } catch (RuntimeException e) {
-
+            // This object is not a commit, so we ignore it.
         }
         return new StagingArea();
     }
