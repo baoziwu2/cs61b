@@ -246,7 +246,6 @@ public class Repository {
     public static void removeBranch(String branchName) {
         checkBranchExist(branchName);
         checkForSameBranch(branchName);
-        String currentBranch = getCurrentBranch();
         File branchFile = Utils.join(HEADS_DIR, branchName);
         branchFile.delete();
     }

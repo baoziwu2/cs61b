@@ -43,15 +43,15 @@ public class ErrorHandling {
     }
 
     public static void checkBranchExist(String branch) {
-        if (doesBranchExist(branch)) {
-           messageAndExit("A branch with that name already exists.");
+        if (!doesBranchExist(branch)) {
+            messageAndExit("A branch with that name does not exist.");
         }
     }
 
     public static void checkForSameBranch(String branch) {
         String currentBranch = Repository.getCurrentBranch();
         if (branch.equals(currentBranch)) {
-            messageAndExit("Cannot merge a branch with itself.");
+            messageAndExit("Cannot remove the current branch.");
         }
     }
 }

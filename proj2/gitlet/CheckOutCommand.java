@@ -103,8 +103,8 @@ public class CheckOutCommand {
     }
 
     private static String findFullCommitId(String abbreviatedId) {
-        final int FullCommitLength = 40;
-        if (abbreviatedId.length() == FullCommitLength) {
+        final int fullCommitLength = 40;
+        if (abbreviatedId.length() == fullCommitLength) {
             File commitFile = Utils.join(Repository.OBJECTS_DIR, abbreviatedId);
             return commitFile.exists() ? abbreviatedId : null;
         }
