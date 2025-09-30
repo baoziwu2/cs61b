@@ -13,8 +13,8 @@ public class ErrorHandling {
 
     public static void checkGitletEmpty(File repository) {
         if (repository.exists()) {
-            messageAndExit("A Gitlet version-control system already" +
-                    " exists in the current directory.");
+            messageAndExit("A Gitlet version-control system already"
+                    + " exists in the current directory.");
         }
     }
 

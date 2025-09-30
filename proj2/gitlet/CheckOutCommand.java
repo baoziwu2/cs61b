@@ -74,12 +74,12 @@ public class CheckOutCommand {
     static String findFullCommitId(String abbreviatedId) {
         final int fullCommitLength = 40;
         if (abbreviatedId.length() == fullCommitLength) {
-            File commitFile = Utils.join(Repository.OBJECTS_DIR, abbreviatedId);
+            File commitFile = Utils.join(Repository.COMMITS_DIR, abbreviatedId);
             return commitFile.exists() ? abbreviatedId : null;
         }
 
         List<String> matchingIds = new ArrayList<>();
-        List<String> allCommitIds = Utils.plainFilenamesIn(Repository.OBJECTS_DIR);
+        List<String> allCommitIds = Utils.plainFilenamesIn(Repository.COMMITS_DIR);
         if (allCommitIds != null) {
             for (String id : allCommitIds) {
                 if (id.startsWith(abbreviatedId)) {

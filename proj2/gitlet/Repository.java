@@ -16,40 +16,29 @@ import static gitlet.Utils.*;
  * @author azbnbNotFound
  */
 public class Repository {
-    /**
-     * List all instance variables of the Repository class here with a useful
-     * comment above them describing what that variable represents and how that
-     * variable is used. We've provided two examples for you.
+    /*
+      List all instance variables of the Repository class here with a useful
+      comment above them describing what that variable represents and how that
+      variable is used. We've provided two examples for you.
      */
 
-    /**
-     * The current working directory.
-     */
+    /** The current working directory. */
     public static final File CWD = new File(System.getProperty("user.dir"));
-    /**
-     * The .gitlet directory.
-     */
+    /** The .gitlet directory. */
     public static final File GITLET_DIR = join(CWD, ".gitlet");
-
-    /**
-     * Storage for Commit and Blob objects.
-     */
+    /** Storage for Commit and Blob objects.*/
     public static final File OBJECTS_DIR = join(GITLET_DIR, "objects");
-    /**
-     * Storage for references (like branches).
-     */
+    /** Storage for Commit objects only. */
+    public static final File COMMITS_DIR = join(OBJECTS_DIR, "commits");
+    /** Storage for Blob objects only. */
+    public static final File BLOBS_DIR = join(OBJECTS_DIR, "blobs");
+    /** Storage for references (like branches). */
     public static final File REFS_DIR = join(GITLET_DIR, "refs");
-    /**
-     * Storage for branch heads.
-     */
+    /** Storage for branch heads. */
     public static final File HEADS_DIR = join(REFS_DIR, "heads");
-    /**
-     * The staging area file.
-     */
+    /** The staging area file. */
     public static final File STAGING_FILE = join(GITLET_DIR, "index");
-    /**
-     * The HEAD file, pointing to the current branch.
-     */
+    /** The HEAD file, pointing to the current branch. */
     public static final File HEAD_FILE = join(GITLET_DIR, "HEAD");
 
     public static String getHeadCommitId() {
@@ -63,7 +52,7 @@ public class Repository {
         if (id == null) {
             return null;
         }
-        File commitFile = Utils.join(OBJECTS_DIR, id);
+        File commitFile = Utils.join(COMMITS_DIR, id);
         if (!commitFile.exists()) {
             return null;
             //throw new GitletException("Commit with id " + id + " does not exist.");
@@ -101,13 +90,15 @@ public class Repository {
         boolean dirCreated = true;
         dirCreated &= GITLET_DIR.mkdir();
         dirCreated &= OBJECTS_DIR.mkdir();
+        dirCreated &= COMMITS_DIR.mkdir();
+        dirCreated &= BLOBS_DIR.mkdir();
         dirCreated &= REFS_DIR.mkdir();
         dirCreated &= HEADS_DIR.mkdir();
         checkCreatingDirectory(dirCreated);
 
         Commit initialCommit = new Commit("initial commit", null, new Date(0L), new TreeMap<>());
         String commitId = Utils.sha1(serialize(initialCommit));
-        File commitFile = Utils.join(OBJECTS_DIR, commitId);
+        File commitFile = Utils.join(COMMITS_DIR, commitId);
         Utils.writeObject(commitFile, initialCommit);
 
         File masterBranchFile = Utils.join(HEADS_DIR, "master");
@@ -134,7 +125,7 @@ public class Repository {
             return;
         }
 
-        File blobFile = join(OBJECTS_DIR, blobId);
+        File blobFile = join(COMMITS_DIR, blobId);
         if (!blobFile.exists()) {
             Utils.writeContents(blobFile, fileContent);
         }
@@ -162,7 +153,7 @@ public class Repository {
 
         Commit newCommit = new Commit(message, getHeadCommitId(), new Date(), newTrackFiles);
         String newCommitId = Utils.sha1(serialize(newCommit));
-        File newCommitFile = Utils.join(OBJECTS_DIR, newCommitId);
+        File newCommitFile = Utils.join(COMMITS_DIR, newCommitId);
         Utils.writeObject(newCommitFile, newCommit);
 
         String headContent = Utils.readContentsAsString(HEAD_FILE);
@@ -182,18 +173,16 @@ public class Repository {
     }
 
     public static void find(String commitMessage) {
-        List<String> objectFiles = Utils.plainFilenamesIn(OBJECTS_DIR);
+        List<String> commitIds = Utils.plainFilenamesIn(COMMITS_DIR);
         boolean matchFound = false;
-        for (String fileName : objectFiles) {
-            try {
-                Commit commit = getCommitById(fileName);
-                if (commitMessage.equals(commit.getMessage())) {
-                    matchFound = true;
-                    System.out.println(fileName);
-                }
 
-            } catch (Exception e) {
-                // This object is not a commit, so we ignore it.
+        if (commitIds != null) {
+            for (String id : commitIds) {
+                Commit commit = getCommitById(id);
+                if (commitMessage.equals(commit.getMessage())) {
+                    System.out.println(id);
+                    matchFound = true;
+                }
             }
         }
 

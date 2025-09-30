@@ -36,16 +36,11 @@ public class Display {
     }
 
     public static void globalLog() {
-        List<String> objectFiles = Utils.plainFilenamesIn(OBJECTS_DIR);
-        for (String fileName : objectFiles) {
-            try {
+        List<String> commitFiles = Utils.plainFilenamesIn(COMMITS_DIR);
+
+        if (commitFiles != null) {
+            for (String fileName : commitFiles) {
                 Commit commit = getCommitById(fileName);
-                if (commit.getMessage() == null) { // Simple check if it's a valid commit
-                    continue;
-                }
-                printLogMessage(fileName, commit);
-            } catch (Exception e) {
-                // This object is not a commit, so we ignore it.
             }
         }
     }
