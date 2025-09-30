@@ -125,7 +125,7 @@ public class Repository {
             return;
         }
 
-        File blobFile = join(COMMITS_DIR, blobId);
+        File blobFile = join(BLOBS_DIR, blobId);
         if (!blobFile.exists()) {
             Utils.writeContents(blobFile, fileContent);
         }
@@ -249,7 +249,7 @@ public class Repository {
             String fileName = entry.getKey();
             String blobId = entry.getValue();
 
-            File blobFile = Utils.join(Repository.OBJECTS_DIR, blobId);
+            File blobFile = Utils.join(Repository.BLOBS_DIR, blobId);
             byte[] fileContent = Utils.readContents(blobFile);
             File fileInCWD = Utils.join(Repository.CWD, fileName);
             Utils.writeContents(fileInCWD, fileContent);

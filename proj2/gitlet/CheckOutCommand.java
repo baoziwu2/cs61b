@@ -59,7 +59,7 @@ public class CheckOutCommand {
         }
 
         String blobId = trackedFiles.get(fileName);
-        File blobFile = Utils.join(Repository.OBJECTS_DIR, blobId);
+        File blobFile = Utils.join(Repository.BLOBS_DIR, blobId);
         byte[] fileContent = Utils.readContents(blobFile);
 
         File fileInCWD = Utils.join(Repository.CWD, fileName);
