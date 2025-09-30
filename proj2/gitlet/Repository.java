@@ -287,7 +287,7 @@ public class Repository {
         if (fullCommitId == null) {
             messageAndExit("No commit with that id exists.");
         }
-        Commit targetCommit = getCommitById(commitId);
+        Commit targetCommit = getCommitById(fullCommitId);
 
         validateNoUntrackedFilesWouldBeOverwritten(targetCommit);
 

@@ -36,11 +36,12 @@ public class Display {
     }
 
     public static void globalLog() {
-        List<String> commitFiles = Utils.plainFilenamesIn(COMMITS_DIR);
+        List<String> commitId = Utils.plainFilenamesIn(COMMITS_DIR);
 
-        if (commitFiles != null) {
-            for (String fileName : commitFiles) {
-                Commit commit = getCommitById(fileName);
+        if (commitId != null) {
+            for (String id : commitId) {
+                Commit commit = getCommitById(id);
+                printLogMessage(id, commit);
             }
         }
     }
