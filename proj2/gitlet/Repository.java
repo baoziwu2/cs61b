@@ -1,10 +1,9 @@
 package gitlet;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
+import static gitlet.CheckOutCommand.validateNoUntrackedFilesWouldBeOverwritten;
 import static gitlet.ErrorHandling.*;
 import static gitlet.Utils.*;
 
@@ -248,6 +247,67 @@ public class Repository {
         checkForSameBranch(branchName);
         File branchFile = Utils.join(HEADS_DIR, branchName);
         branchFile.delete();
+    }
+
+    public static void resetWorkspaceToCommit(Commit targetCommit) {
+        Commit currentCommit = getCurrentCommit();
+
+        Map<String, String> targetFiles = targetCommit.getTrackedFiles();
+        Map<String, String> currentFiles = currentCommit.getTrackedFiles();
+
+        for (Map.Entry<String, String> entry : targetFiles.entrySet()) {
+            String fileName = entry.getKey();
+            String blobId = entry.getValue();
+
+            File blobFile = Utils.join(Repository.OBJECTS_DIR, blobId);
+            byte[] fileContent = Utils.readContents(blobFile);
+            File fileInCWD = Utils.join(Repository.CWD, fileName);
+            Utils.writeContents(fileInCWD, fileContent);
+        }
+
+        for (String fileName : currentFiles.keySet()) {
+            if (!targetFiles.containsKey(fileName)) {
+                Utils.restrictedDelete(fileName);
+            }
+        }
+    }
+
+    public static void validateNoUntrackedFilesWouldBeOverwritten(Commit targetCommit) {
+        Commit currentCommit = Repository.getCurrentCommit();
+
+        List<String> untrackedFiles = new ArrayList<>();
+        for (String fileName : Utils.plainFilenamesIn(Repository.CWD)) {
+            boolean isTracked = currentCommit.getTrackedFiles().containsKey(fileName);
+            boolean isStaged = StagingArea.load().getFileForAddition().containsKey(fileName);
+            if (!isTracked && !isStaged) {
+                untrackedFiles.add(fileName);
+            }
+        }
+
+        for (String untrackedFile : untrackedFiles) {
+            if (targetCommit.getTrackedFiles().containsKey(untrackedFile)) {
+                ErrorHandling.messageAndExit("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first.");
+            }
+        }
+    }
+
+    public static void reset(String commitId) {
+        Commit targetCommit = getCommitById(commitId);
+        if (targetCommit == null) {
+            messageAndExit("No commit with that id exists.");
+        }
+
+        validateNoUntrackedFilesWouldBeOverwritten(targetCommit);
+
+        resetWorkspaceToCommit(targetCommit);
+
+        String headContent = Utils.readContentsAsString(HEAD_FILE);
+        String branchPath = headContent.split(": ")[1];
+        File branchFile = Utils.join(GITLET_DIR, branchPath);
+        Utils.writeContents(branchFile, commitId);
+
+        StagingArea.clear();
     }
 }
 

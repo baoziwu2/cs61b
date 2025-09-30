@@ -29,25 +29,9 @@ public class CheckOutCommand {
         }
     }
 
-    private static void validateNoUntrackedFilesWouldBeOverwritten(String branchName) {
-        Commit currentCommit = Repository.getCurrentCommit();
+    public static void validateNoUntrackedFilesWouldBeOverwritten(String branchName) {
         Commit targetCommit = Repository.getCommitByBranch(branchName);
-
-        List<String> untrackedFiles = new ArrayList<>();
-        for (String fileName : Utils.plainFilenamesIn(Repository.CWD)) {
-            boolean isTracked = currentCommit.getTrackedFiles().containsKey(fileName);
-            boolean isStaged = StagingArea.load().getFileForAddition().containsKey(fileName); // 重新加载以获取最新状态
-            if (!isTracked && !isStaged) {
-                untrackedFiles.add(fileName);
-            }
-        }
-
-        for (String untrackedFile : untrackedFiles) {
-            if (targetCommit.getTrackedFiles().containsKey(untrackedFile)) {
-                ErrorHandling.messageAndExit("There is an untracked file in the way; "
-                        + "delete it, or add and commit it first.");
-            }
-        }
+        Repository.validateNoUntrackedFilesWouldBeOverwritten(targetCommit);
     }
 
     private static void checkOutBranch(String branchName) {
@@ -59,23 +43,8 @@ public class CheckOutCommand {
         Commit currentCommit = Repository.getCurrentCommit();
 
         Map<String, String> targetFiles = targetCommit.getTrackedFiles();
-        Map<String, String> currentFiles = currentCommit.getTrackedFiles();
 
-        for (Map.Entry<String, String> entry : targetFiles.entrySet()) {
-            String fileName = entry.getKey();
-            String blobId = entry.getValue();
-
-            File blobFile = Utils.join(Repository.OBJECTS_DIR, blobId);
-            byte[] fileContent = Utils.readContents(blobFile);
-            File fileInCWD = Utils.join(Repository.CWD, fileName);
-            Utils.writeContents(fileInCWD, fileContent);
-        }
-
-        for (String fileName : currentFiles.keySet()) {
-            if (!targetFiles.containsKey(fileName)) {
-                Utils.restrictedDelete(fileName);
-            }
-        }
+        Repository.resetWorkspaceToCommit(targetCommit);
 
         String headContent = "ref: refs/heads/" + branchName;
         Utils.writeContents(Repository.HEAD_FILE, headContent);
