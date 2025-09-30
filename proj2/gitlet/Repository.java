@@ -273,7 +273,7 @@ public class Repository {
         }
     }
 
-    private static void validateNoUntrackedFilesWouldBeOverwritten(Commit targetCommit) {
+    static void validateNoUntrackedFilesWouldBeOverwritten(Commit targetCommit) {
         Commit currentCommit = Repository.getCurrentCommit();
 
         List<String> untrackedFiles = new ArrayList<>();
