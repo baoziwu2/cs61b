@@ -71,7 +71,7 @@ public class CheckOutCommand {
         restoreFileFromCommit(headCommit, fileName);
     }
 
-    private static String findFullCommitId(String abbreviatedId) {
+    static String findFullCommitId(String abbreviatedId) {
         final int fullCommitLength = 40;
         if (abbreviatedId.length() == fullCommitLength) {
             File commitFile = Utils.join(Repository.OBJECTS_DIR, abbreviatedId);

@@ -3,6 +3,7 @@ package gitlet;
 import java.io.File;
 import java.util.*;
 
+import static gitlet.CheckOutCommand.findFullCommitId;
 import static gitlet.CheckOutCommand.validateNoUntrackedFilesWouldBeOverwritten;
 import static gitlet.ErrorHandling.*;
 import static gitlet.Utils.*;
@@ -272,7 +273,7 @@ public class Repository {
         }
     }
 
-    public static void validateNoUntrackedFilesWouldBeOverwritten(Commit targetCommit) {
+    private static void validateNoUntrackedFilesWouldBeOverwritten(Commit targetCommit) {
         Commit currentCommit = Repository.getCurrentCommit();
 
         List<String> untrackedFiles = new ArrayList<>();
@@ -293,19 +294,19 @@ public class Repository {
     }
 
     public static void reset(String commitId) {
-        Commit targetCommit = getCommitById(commitId);
-        if (targetCommit == null) {
+        String fullCommitId = findFullCommitId(commitId); // 复用 CheckoutCommand 中的 findFullCommitId
+        if (fullCommitId == null) {
             messageAndExit("No commit with that id exists.");
         }
+        Commit targetCommit = getCommitById(commitId);
 
         validateNoUntrackedFilesWouldBeOverwritten(targetCommit);
 
         resetWorkspaceToCommit(targetCommit);
 
-        String headContent = Utils.readContentsAsString(HEAD_FILE);
-        String branchPath = headContent.split(": ")[1];
-        File branchFile = Utils.join(GITLET_DIR, branchPath);
-        Utils.writeContents(branchFile, commitId);
+        String currentBranch = getCurrentBranch();
+        File branchFile = Utils.join(HEADS_DIR, currentBranch);
+        Utils.writeContents(branchFile, fullCommitId);
 
         StagingArea.clear();
     }

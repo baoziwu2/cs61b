@@ -58,7 +58,7 @@ public class Main {
                 Repository.remove(args[1]);
                 break;
             case RESET:
-                messageAndExit("Not yet implemented.");
+                Repository.reset(args[1]);
                 break;
             case MERGE:
                 messageAndExit("Not yet implemented.");
