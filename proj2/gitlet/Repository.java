@@ -45,9 +45,13 @@ public class Repository {
 
     public static String getHeadCommitId() {
         String headContent = Utils.readContentsAsString(HEAD_FILE);
-        String branchPath = headContent.split(": ")[1];
-        File branchFile = Utils.join(GITLET_DIR, branchPath);
-        return Utils.readContentsAsString(branchFile);
+        if (headContent.startsWith("ref: ")) {
+            String branchPath = headContent.split(": ")[1];
+            File branchFile = Utils.join(GITLET_DIR, branchPath);
+            return Utils.readContentsAsString(branchFile);
+        } else {
+            return headContent;
+        }
     }
 
     public static Commit getCommitById(String id) {

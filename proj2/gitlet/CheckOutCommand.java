@@ -30,7 +30,8 @@ public class CheckOutCommand {
         String remoteName = parts[0];
         String remoteBranchName = parts[1];
 
-        File remoteRefFile = Utils.join(Repository.GITLET_DIR, "refs", "remotes", remoteName, remoteBranchName);
+        File remoteRefFile = Utils.join(Repository.GITLET_DIR, "refs", "remotes",
+                remoteName, remoteBranchName);
         if (!remoteRefFile.exists()) {
             ErrorHandling.messageAndExit("No such branch exists.");
             return;
