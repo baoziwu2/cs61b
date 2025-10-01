@@ -34,7 +34,7 @@ public class CheckOutCommand {
         Repository.validateNoUntrackedFilesWouldBeOverwritten(targetCommit);
     }
 
-    private static void checkOutBranch(String branchName) {
+    static void checkOutBranch(String branchName) {
         validateBranchExists(branchName);
         validateIsNotCurrentBranch(branchName);
         validateNoUntrackedFilesWouldBeOverwritten(branchName);
@@ -52,7 +52,7 @@ public class CheckOutCommand {
         StagingArea.clear();
     }
 
-    private static void restoreFileFromCommit(Commit targetCommit, String fileName) {
+    static void restoreFileFromCommit(Commit targetCommit, String fileName) {
         Map<String, String> trackedFiles = targetCommit.getTrackedFiles();
         if (!trackedFiles.containsKey(fileName)) {
             ErrorHandling.messageAndExit("File does not exist in that commit."); //
@@ -94,8 +94,8 @@ public class CheckOutCommand {
         return null;
     }
 
-    private static void checkOutFileInCommit(String commitId,
-                                             String fileName) {
+    static void checkOutFileInCommit(String commitId,
+                                     String fileName) {
         String fullCommitId = findFullCommitId(commitId);
         if (fullCommitId == null) {
             ErrorHandling.messageAndExit("No commit with that id exists.");

@@ -37,6 +37,15 @@ public class Commit implements Serializable {
         this.trackedFiles = trackedFiles;
     }
 
+    public Commit(String message, String parentId, String secondParentId, Date date,
+                  TreeMap<String, String> trackedFiles) {
+        this.message = message;
+        this.date = date;
+        this.parentId = parentId;
+        this.secondParentId = secondParentId;
+        this.trackedFiles = trackedFiles;
+    }
+
     // getters
     public String getMessage() {
         return message;
@@ -49,9 +58,11 @@ public class Commit implements Serializable {
     public boolean isMergeCommit() {
         return secondParentId != null;
     }
-
     public String getParentId() {
         return parentId;
+    }
+    public String getSecondParentId() {
+        return secondParentId;
     }
 
     public Map<String, String> getTrackedFiles() {

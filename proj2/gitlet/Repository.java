@@ -135,6 +135,10 @@ public class Repository {
     }
 
     public static void commit(String message) {
+        commit(message, null);
+    }
+
+    static void commit(String message, String secondParentId) {
         StagingArea stagingArea = StagingArea.load();
         checkStageEmpty(stagingArea);
         checkCommitMessage(message);
@@ -151,7 +155,7 @@ public class Repository {
             newTrackFiles.remove(fileName);
         }
 
-        Commit newCommit = new Commit(message, getHeadCommitId(), new Date(), newTrackFiles);
+        Commit newCommit = new Commit(message, getHeadCommitId(), secondParentId, new Date(), newTrackFiles);
         String newCommitId = Utils.sha1(serialize(newCommit));
         File newCommitFile = Utils.join(COMMITS_DIR, newCommitId);
         Utils.writeObject(newCommitFile, newCommit);
