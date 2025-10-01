@@ -175,12 +175,27 @@ public class MergeCommand {
 
         File givenBranchFile = Utils.join(Repository.HEADS_DIR, branchName);
         String givenCommitId = Utils.readContentsAsString(givenBranchFile);
-
         Commit givenCommit = Repository.getCommitById(givenCommitId);
 
-        Commit currentCommit = Repository.getCurrentCommit();
-        String currentCommitId = Repository.getHeadCommitId();
+        performMerge(branchName, givenCommit, givenCommitId);
+    }
 
+    public static void executeForPull(String remoteName, String remoteBranchName) {
+        String givenRefName = remoteName + "/" + remoteBranchName;
+
+        File fetchedRefFile = Utils.join(Repository.GITLET_DIR, "refs", "remotes", remoteName, remoteBranchName);
+        if (!fetchedRefFile.exists()) {
+            ErrorHandling.messageAndExit("Fetch failed, cannot find remote reference.");
+        }
+        String givenCommitId = Utils.readContentsAsString(fetchedRefFile);
+        Commit givenCommit = Repository.getCommitById(givenCommitId);
+
+        performMerge(givenRefName, givenCommit, givenCommitId);
+    }
+
+    private static void performMerge(String branchName, Commit givenCommit, String givenCommitId) {
+        String currentCommitId = Repository.getHeadCommitId();
+        Commit currentCommit = Repository.getCurrentCommit();
         String splitPointId = findSplitPoint(givenCommitId, currentCommitId);
         Commit splitPointCommit = Repository.getCommitById(splitPointId);
 
