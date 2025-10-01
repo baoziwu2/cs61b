@@ -63,7 +63,7 @@ public class ErrorHandling {
     }
 
     public static void checkRemoteDirectoryCanBeFound(File remoteFile) {
-        if(!remoteFile.exists()) {
+        if (!remoteFile.exists()) {
             messageAndExit("Remote directory not found.");
         }
     }

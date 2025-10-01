@@ -72,6 +72,12 @@ public class Main {
             case PUSH:
                 RemoteCommand.push(args[1], args[2]);
                 break;
+            case FETCH:
+                RemoteCommand.fetch(args[1], args[2]);
+                break;
+            case PULL:
+                RemoteCommand.pull(args[1], args[2]);
+                break;
             default:
                 messageAndExit("No command with that name exists.");
         }

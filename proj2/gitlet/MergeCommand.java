@@ -183,7 +183,8 @@ public class MergeCommand {
     public static void executeForPull(String remoteName, String remoteBranchName) {
         String givenRefName = remoteName + "/" + remoteBranchName;
 
-        File fetchedRefFile = Utils.join(Repository.GITLET_DIR, "refs", "remotes", remoteName, remoteBranchName);
+        File fetchedRefFile = Utils.join(Repository.GITLET_DIR, "refs", "remotes",
+                remoteName, remoteBranchName);
         if (!fetchedRefFile.exists()) {
             ErrorHandling.messageAndExit("Fetch failed, cannot find remote reference.");
         }

@@ -71,7 +71,9 @@ public class RemoteCommand {
             }
             commitsToPush.add(currentId);
             Commit c = getCommitById(currentId);
-            if (c == null) continue;
+            if (c == null) {
+                continue;
+            }
 
             blobsToPush.addAll(c.getTrackedFiles().values());
 
@@ -147,7 +149,9 @@ public class RemoteCommand {
             }
 
             Commit commit = getCommitById(commitId);
-            if (commit == null) continue;
+            if (commit == null) {
+                continue;
+            }
 
             for (String blobId : commit.getTrackedFiles().values()) {
                 File localBlobFile = Utils.join(BLOBS_DIR, blobId);
