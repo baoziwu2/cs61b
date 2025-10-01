@@ -78,7 +78,10 @@ public class Repository {
 
     public static String getCurrentBranch() {
         String headContent = Utils.readContentsAsString(HEAD_FILE);
-        return headContent.split(": ")[1].substring("refs/heads/".length());
+        if (!headContent.startsWith("ref: refs/heads/")) {
+            return null;
+        }
+        return headContent.substring("ref: refs/heads/".length());
     }
 
     public static Commit getCommitByBranch(String branch) {
