@@ -33,12 +33,15 @@ public class MergeCommand {
                 continue;
             }
 
-            if (commit.getParentId() != null && !currentAncestors.containsKey(commit.getParentId())) {
+            if (commit.getParentId() != null &&
+                    !currentAncestors.containsKey(commit.getParentId())) {
                 currentAncestors.put(commit.getParentId(), currentAncestors.get(commitId) + 1);
                 queue.add(commit.getParentId());
             }
-            if (commit.isMergeCommit() && !currentAncestors.containsKey(commit.getSecondParentId())) {
-                currentAncestors.put(commit.getSecondParentId(), currentAncestors.get(commitId) + 1);
+            if (commit.isMergeCommit() &&
+                    !currentAncestors.containsKey(commit.getSecondParentId())) {
+                currentAncestors.put(commit.getSecondParentId(),
+                        currentAncestors.get(commitId) + 1);
                 queue.add(commit.getSecondParentId());
             }
         }
@@ -140,10 +143,13 @@ public class MergeCommand {
                 }
             } else if (modifiedInCurrent && !modifiedInGiven) {
                 // rule 2 and 4 and 7
+                continue;
             } else if (!modifiedInCurrent && !modifiedInGiven) {
+                continue;
             } else {
                 if (Objects.equals(currentBlobId, givenBlobId)) {
                     // rule 3
+                    continue;
                 } else {
                     // rule 8
                     conflictOccurred = true;
