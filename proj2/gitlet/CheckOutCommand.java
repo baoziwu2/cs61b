@@ -9,12 +9,41 @@ public class CheckOutCommand {
     public static void execute(String... args) { // args exclude "checkout"
         int len = args.length;
         if (len == 1) { // checkout branch name
-            checkOutBranch(args[0]);
+            if (args[0].contains("/")) {
+                checkOutRemoteBranch(args[0]);
+            } else {
+                checkOutBranch(args[0]);
+            }
         } else if (len == 2) { // checkout -- [file name]
             checkOutFileInHead(args[1]);
         } else { // len == 3, checkout [commit id] -- [file name]
             checkOutFileInCommit(args[0], args[2]);
         }
+    }
+
+    private static void checkOutRemoteBranch(String refName) {
+        String[] parts = refName.split("/");
+        if (parts.length != 2) {
+            ErrorHandling.messageAndExit("Invalid remote branch reference.");
+            return;
+        }
+        String remoteName = parts[0];
+        String remoteBranchName = parts[1];
+
+        File remoteRefFile = Utils.join(Repository.GITLET_DIR, "refs", "remotes", remoteName, remoteBranchName);
+        if (!remoteRefFile.exists()) {
+            ErrorHandling.messageAndExit("No such branch exists.");
+            return;
+        }
+
+        String commitId = Utils.readContentsAsString(remoteRefFile);
+        Commit targetCommit = Repository.getCommitById(commitId);
+
+        Repository.validateNoUntrackedFilesWouldBeOverwritten(targetCommit);
+        Repository.resetWorkspaceToCommit(targetCommit);
+        Utils.writeContents(Repository.HEAD_FILE, commitId);
+
+        StagingArea.clear();
     }
 
     private static void validateBranchExists(String branch) {
