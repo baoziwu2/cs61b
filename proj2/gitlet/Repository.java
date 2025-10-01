@@ -303,6 +303,10 @@ public class Repository {
 
         StagingArea.clear();
     }
+
+    public static void merge(String branchName) {
+        MergeCommand.execute(branchName);
+    }
 }
 
 

@@ -61,7 +61,7 @@ public class Main {
                 Repository.reset(args[1]);
                 break;
             case MERGE:
-                messageAndExit("Not yet implemented.");
+                Repository.merge(args[1]);
                 break;
             default:
                 messageAndExit("No command with that name exists.");

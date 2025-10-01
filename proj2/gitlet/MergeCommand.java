@@ -7,14 +7,14 @@ import static gitlet.ErrorHandling.messageAndExit;
 
 public class MergeCommand {
     private static void previousChecker(String branchName, StagingArea stagingArea) {
-        if(!stagingArea.isEmpty()) {
+        if (!stagingArea.isEmpty()) {
             messageAndExit("You have uncommitted changes.");
         }
-        if(!Repository.doesBranchExist(branchName)) {
+        if (!Repository.doesBranchExist(branchName)) {
             messageAndExit("A branch with that name does not exist.");
         }
         String currentBranch = Repository.getCurrentBranch();
-        if(currentBranch.equals(branchName)) {
+        if (currentBranch.equals(branchName)) {
             messageAndExit("Cannot merge a branch with itself.");
         }
         Commit targetCommit = Repository.getCommitByBranch(branchName);
@@ -26,18 +26,18 @@ public class MergeCommand {
         Queue<String> queue = new LinkedList<>();
         queue.add(currentCommitId);
         currentAncestors.put(currentCommitId, 0);
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             String commitId = queue.poll();
             Commit commit = Repository.getCommitById(commitId);
-            if(commit == null) {
+            if (commit == null) {
                 continue;
             }
 
-            if(commit.getParentId() != null && !currentAncestors.containsKey(commit.getParentId())) {
+            if (commit.getParentId() != null && !currentAncestors.containsKey(commit.getParentId())) {
                 currentAncestors.put(commit.getParentId(), currentAncestors.get(commitId) + 1);
                 queue.add(commit.getParentId());
             }
-            if(commit.isMergeCommit() && !currentAncestors.containsKey(commit.getSecondParentId())) {
+            if (commit.isMergeCommit() && !currentAncestors.containsKey(commit.getSecondParentId())) {
                 currentAncestors.put(commit.getSecondParentId(), currentAncestors.get(commitId) + 1);
                 queue.add(commit.getSecondParentId());
             }
@@ -46,21 +46,21 @@ public class MergeCommand {
         Set<String> visitedInTarget = new HashSet<>();
         queue.add(targetCommitId); // already empty
         visitedInTarget.add(targetCommitId);
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             String commitId = queue.poll();
-            if(currentAncestors.containsKey(commitId)) {
+            if (currentAncestors.containsKey(commitId)) {
                 return commitId; // find lca
             }
             Commit commit = Repository.getCommitById(commitId);
-            if(commit == null) {
+            if (commit == null) {
                 continue;
             }
 
-            if(commit.getParentId() != null && !visitedInTarget.contains(commit.getParentId())) {
+            if (commit.getParentId() != null && !visitedInTarget.contains(commit.getParentId())) {
                 visitedInTarget.add(commit.getParentId());
                 queue.add(commit.getParentId());
             }
-            if(commit.isMergeCommit() && !visitedInTarget.contains(commit.getSecondParentId())) {
+            if (commit.isMergeCommit() && !visitedInTarget.contains(commit.getSecondParentId())) {
                 visitedInTarget.add(commit.getSecondParentId());
                 queue.add(commit.getSecondParentId());
             }
