@@ -13,7 +13,12 @@ public enum StandardCommand {
     BRANCH(2),
     RM_BRANCH(2),
     RESET(2),
-    MERGE(2);
+    MERGE(2),
+    ADD_REMOTE(3),
+    RM_REMOTE(2),
+    PUSH(3),
+    FETCH(3),
+    PULL(3);
 
     private final int requiredArgs;
 

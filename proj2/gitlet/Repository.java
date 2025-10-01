@@ -40,6 +40,8 @@ public class Repository {
     public static final File STAGING_FILE = join(GITLET_DIR, "index");
     /** The HEAD file, pointing to the current branch. */
     public static final File HEAD_FILE = join(GITLET_DIR, "HEAD");
+    /** Storage for remote configurations. */
+    public static final File REMOTES_DIR = join(GITLET_DIR, "remotes");
 
     public static String getHeadCommitId() {
         String headContent = Utils.readContentsAsString(HEAD_FILE);
@@ -94,6 +96,7 @@ public class Repository {
         dirCreated &= BLOBS_DIR.mkdir();
         dirCreated &= REFS_DIR.mkdir();
         dirCreated &= HEADS_DIR.mkdir();
+        dirCreated &= REMOTES_DIR.mkdir();
         checkCreatingDirectory(dirCreated);
 
         Commit initialCommit = new Commit("initial commit", null, new Date(0L), new TreeMap<>());

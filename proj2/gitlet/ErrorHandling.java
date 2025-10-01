@@ -61,4 +61,16 @@ public class ErrorHandling {
             messageAndExit("Cannot remove the current branch.");
         }
     }
+
+    public static void checkRemoteExist(File remoteFile) {
+        if (remoteFile.exists()) {
+            messageAndExit("A remote with that name already exists.");
+        }
+    }
+
+    public static void checkRemoteDirectoryCanBeFound(File remoteFile) {
+        if(!remoteFile.exists()) {
+            messageAndExit("Remote directory not found.");
+        }
+    }
 }

@@ -33,13 +33,13 @@ public class MergeCommand {
                 continue;
             }
 
-            if (commit.getParentId() != null &&
-                    !currentAncestors.containsKey(commit.getParentId())) {
+            if (commit.getParentId() != null
+                    && !currentAncestors.containsKey(commit.getParentId())) {
                 currentAncestors.put(commit.getParentId(), currentAncestors.get(commitId) + 1);
                 queue.add(commit.getParentId());
             }
-            if (commit.isMergeCommit() &&
-                    !currentAncestors.containsKey(commit.getSecondParentId())) {
+            if (commit.isMergeCommit()
+                    && !currentAncestors.containsKey(commit.getSecondParentId())) {
                 currentAncestors.put(commit.getSecondParentId(),
                         currentAncestors.get(commitId) + 1);
                 queue.add(commit.getSecondParentId());
