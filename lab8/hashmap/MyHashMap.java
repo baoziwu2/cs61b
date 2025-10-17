@@ -12,7 +12,7 @@ import java.util.Set;
  *  @author YOUR NAME HERE
  */
 public class MyHashMap<K, V> implements Map61B<K, V> {
-    public double getLoadFactor() {
+    private double getLoadFactor() {
         return loadFactor;
     }
 
