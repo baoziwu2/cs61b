@@ -45,8 +45,9 @@ public class Engine {
         //
         // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
         // that works for many different input types.
-
-        TETile[][] finalWorldFrame = null;
+        // input will be like: N123253S, extract the number part for seed
+        long seed = Integer.parseInt(input.replace("\\D+", ""));
+        TETile[][] finalWorldFrame = WorldGenerator.generateWorld(seed);
         return finalWorldFrame;
     }
 }
