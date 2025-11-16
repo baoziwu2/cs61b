@@ -9,6 +9,8 @@ public class Engine {
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
 
+
+
     /**
      * Method used for exploring a fresh world. This method should handle all inputs,
      * including inputs from the main menu.
@@ -47,7 +49,7 @@ public class Engine {
         // that works for many different input types.
         // input will be like: N123253S, extract the number part for seed
         long seed = Integer.parseInt(input.replace("\\D+", ""));
-        TETile[][] finalWorldFrame = WorldGenerator.generateWorld(seed);
-        return finalWorldFrame;
+        WorldGenerator worldGenerator = new WorldGenerator(WIDTH, HEIGHT, seed);
+        return worldGenerator.generateWorld();
     }
 }

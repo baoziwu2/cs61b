@@ -4,12 +4,9 @@ import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Vector;
 
-import static byow.Core.RandomUtils.*;
-
-public class RoadConector {
+public class RoadConnector {
     // use prim for MST
     private static int distance(Room a, Room b) {
         int ax = a.x + a.width / 2;
@@ -19,7 +16,7 @@ public class RoadConector {
         return Math.abs(ax - bx) + Math.abs(ay - by);
     }
 
-    private static void createCorridor(TETile[][] worldFrame, Room a, Room b) {
+    private void createCorridor(TETile[][] worldFrame, Room a, Room b) {
         // there should be walls around corridors
         int ax = a.x + a.width / 2;
         int ay = a.y + a.height / 2;
@@ -34,7 +31,7 @@ public class RoadConector {
         }
     }
 
-    public static void connectRooms(TETile[][] worldFrame, Vector<Room> rooms) {
+    public void connectRooms(TETile[][] worldFrame, Vector<Room> rooms) {
         int n = rooms.size();
         boolean[] inMST = new boolean[n];
         int[] minDist = new int[n];

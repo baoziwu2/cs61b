@@ -6,11 +6,11 @@ import byow.TileEngine.Tileset;
 import java.util.Queue;
 
 public class WallFiller {
-    private static boolean checkForAdjacentFloor(TETile[][] world, int x, int y) {
+    private boolean checkForAdjacentFloor(TETile[][] world, int x, int y) {
         return world[x][y] == Tileset.FLOOR;
     }
 
-    public static void wallFiller(TETile[][] world) {
+    public void wallFiller(TETile[][] world) {
         int width = world.length;
         int height = world[0].length;
 
