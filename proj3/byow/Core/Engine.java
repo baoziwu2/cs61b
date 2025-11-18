@@ -48,8 +48,51 @@ public class Engine {
         // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
         // that works for many different input types.
         // input will be like: N123253S, extract the number part for seed
-        long seed = Integer.parseInt(input.replace("\\D+", ""));
-        WorldGenerator worldGenerator = new WorldGenerator(WIDTH, HEIGHT, seed);
-        return worldGenerator.generateWorld();
+        input = input.toUpperCase();
+        long seed = 0;
+        StringBuilder seedString = new StringBuilder();
+        boolean gatheringSeed = false;
+
+        WorldGenerator worldGenerator = null;
+        TETile[][] worldFrame = null;
+
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+
+            if (gatheringSeed) {
+                if (Character.isDigit(c)) {
+                    seedString.append(c);
+                } else if (c == 'S') {
+                    gatheringSeed = false;
+                    seed = Long.parseLong(seedString.toString());
+                    worldGenerator = new WorldGenerator(WIDTH, HEIGHT, seed);
+                    worldFrame = worldGenerator.generateWorld();
+                }
+            } else {
+                switch (c) {
+                    case 'N':
+                        gatheringSeed = true;
+                        seedString.setLength(0);
+                        break;
+                    case 'L':
+                        break;
+                    case ':':
+                        if (i + 1 < input.length() && input.charAt(i + 1) == 'Q') {
+                            return worldFrame;
+                        }
+                        break;
+                    case 'W':
+                    case 'A':
+                    case 'S':
+                    case 'D':
+                        if (worldFrame != null) {
+                        }
+                        break;
+                }
+            }
+        }
+
+        return worldFrame;
+
     }
 }
