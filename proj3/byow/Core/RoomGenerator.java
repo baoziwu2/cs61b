@@ -10,14 +10,14 @@ import static byow.Core.RandomUtils.uniform;
 
 public class RoomGenerator {
     TETile[][] worldFrame;
-    private int WorldWidth;
-    private int WorldHeight;
+    private int worldWidth;
+    private int worldHeight;
     private Random random;
 
-    public RoomGenerator(int WorldWidth, int WorldHeight, long seed) {
-        this.WorldWidth = WorldWidth;
-        this.WorldHeight = WorldHeight;
-        this.worldFrame = new TETile[WorldWidth][WorldHeight];
+    public RoomGenerator(int worldWidth, int worldHeight, long seed) {
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
+        this.worldFrame = new TETile[worldWidth][worldHeight];
         initialize(seed);
     }
 
@@ -37,10 +37,10 @@ public class RoomGenerator {
     }
 
     public Room generateRoom() {
-        int width = uniform(random, WorldWidth / 20, WorldWidth / 5);
-        int height = uniform(random, WorldHeight / 20, WorldHeight / 5);
-        int x = uniform(random, 0, WorldWidth - width);
-        int y = uniform(random, 0, WorldHeight - height);
+        int width = uniform(random, worldWidth / 20, worldWidth / 5);
+        int height = uniform(random, worldHeight / 20, worldHeight / 5);
+        int x = uniform(random, 0, worldWidth - width);
+        int y = uniform(random, 0, worldHeight - height);
         Room newRoom = new Room(x, y, width, height);
 
         if (checkRoomOverlap(newRoom)) {
@@ -62,8 +62,8 @@ public class RoomGenerator {
 
     public void roomInit(long seed, int worldWidth, int worldHeight, TETile[][] worldFrame) {
         initialize(seed);
-        WorldWidth = worldWidth;
-        WorldHeight = worldHeight;
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
         this.worldFrame = worldFrame;
     }
 
