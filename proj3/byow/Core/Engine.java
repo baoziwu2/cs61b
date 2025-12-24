@@ -88,7 +88,8 @@ public class Engine {
                         break;
                     case 'Q':
                         saveGame();
-                        System.exit(0);
+                        selected = true;
+                        // System.exit(0);
                         break;
                 }
             }
@@ -143,7 +144,8 @@ public class Engine {
                     while (!StdDraw.hasNextKeyTyped()) ;
                     if (Character.toUpperCase(StdDraw.nextKeyTyped()) == 'Q') {
                         saveGame();
-                        System.exit(0);
+                        return ;
+//                        System.exit(0);
                     }
                 } else {
                     avatar.move(worldFrame, c);
