@@ -8,15 +8,14 @@ import java.awt.*;
 import java.io.*;
 
 public class Engine {
-    TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
-    private Avatar avatar;
+    private static final String SAVE_FILE_NAME = "game_save.txt";
+    TERenderer ter = new TERenderer();
     WorldGenerator worldGenerator;
     TETile[][] worldFrame;
-
-    private static final String SAVE_FILE_NAME = "game_save.txt";
+    private Avatar avatar;
 
     private void saveGame() {
         try {
@@ -36,7 +35,7 @@ public class Engine {
     private void loadGame() {
         File file = new File(SAVE_FILE_NAME);
         if (!file.exists()) {
-            return ;
+            return;
         }
 
         try {
@@ -62,7 +61,7 @@ public class Engine {
 
         processMenu();
 
-        if(worldFrame != null) {
+        if (worldFrame != null) {
             gameLoop();
         }
     }
@@ -84,10 +83,12 @@ public class Engine {
                         break;
                     case 'L':
                         loadGame();
-                        selected = true;
+                        if (worldFrame != null && avatar != null) {
+                            selected = true;
+                        }
                         break;
                     case 'Q':
-                        saveGame();
+                        // saveGame();
                         selected = true;
                         // System.exit(0);
                         break;
@@ -129,13 +130,13 @@ public class Engine {
             int mouseX = (int) StdDraw.mouseX();
             int mouseY = (int) StdDraw.mouseY();
 
-             String hudText = "";
-             if (mouseX < WIDTH && mouseY < HEIGHT && mouseX >= 0 && mouseY >= 0) {
+            String hudText = "";
+            if (mouseX < WIDTH && mouseY < HEIGHT && mouseX >= 0 && mouseY >= 0) {
                 hudText = worldFrame[mouseX][mouseY].description();
-             }
-             ter.renderFrame(worldFrame);
-             StdDraw.textLeft(1, HEIGHT - 1, hudText);
-             StdDraw.show();
+            }
+            ter.renderFrame(worldFrame);
+            StdDraw.textLeft(1, HEIGHT - 1, hudText);
+            StdDraw.show();
 
             if (StdDraw.hasNextKeyTyped()) {
                 char c = Character.toUpperCase(StdDraw.nextKeyTyped());
@@ -144,7 +145,7 @@ public class Engine {
                     while (!StdDraw.hasNextKeyTyped()) ;
                     if (Character.toUpperCase(StdDraw.nextKeyTyped()) == 'Q') {
                         saveGame();
-                        return ;
+                        return;
 //                        System.exit(0);
                     }
                 } else {
@@ -171,18 +172,18 @@ public class Engine {
      * of characters (for example, "n123sswwdasdassadwas", "n123sss:q", "lwww". The engine should
      * behave exactly as if the user typed these characters into the engine using
      * interactWithKeyboard.
-     *
+     * <p>
      * Recall that strings ending in ":q" should cause the game to quite save. For example,
      * if we do interactWithInputString("n123sss:q"), we expect the game to run the first
      * 7 commands (n123sss) and then quit and save. If we then do
      * interactWithInputString("l"), we should be back in the exact same state.
-     *
+     * <p>
      * In other words, both of these calls:
-     *   - interactWithInputString("n123sss:q")
-     *   - interactWithInputString("lww")
-     *
+     * - interactWithInputString("n123sss:q")
+     * - interactWithInputString("lww")
+     * <p>
      * should yield the exact same world state as:
-     *   - interactWithInputString("n123sssww")
+     * - interactWithInputString("n123sssww")
      *
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
@@ -254,7 +255,7 @@ public class Engine {
     }
 
     private void move(TETile[][] worldFrame, char cmd) {
-        if(avatar != null) {
+        if (avatar != null) {
             avatar.move(worldFrame, cmd);
         }
     }

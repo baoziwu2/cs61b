@@ -3,8 +3,6 @@ package byow.Core;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 
-import java.util.Queue;
-
 public class WallFiller {
     private boolean checkForAdjacentFloor(TETile[][] world, int x, int y) {
         return world[x][y] == Tileset.FLOOR;
@@ -14,8 +12,8 @@ public class WallFiller {
         int width = world.length;
         int height = world[0].length;
 
-        for (int x = 1; x < width - 1; ++ x) {
-            for (int y = 1; y < height - 1; ++ y) {
+        for (int x = 1; x < width - 1; ++x) {
+            for (int y = 1; y < height - 1; ++y) {
                 if (world[x][y] == Tileset.NOTHING) {
                     boolean adjacentToFloor = false;
 

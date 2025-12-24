@@ -6,13 +6,12 @@ import byow.TileEngine.Tileset;
 import java.util.Random;
 import java.util.Vector;
 
-import static byow.Core.RandomUtils.*;
+import static byow.Core.RandomUtils.uniform;
 
 public class RoomGenerator {
+    TETile[][] worldFrame;
     private int WorldWidth;
     private int WorldHeight;
-    TETile[][] worldFrame;
-
     private Random random;
 
     public RoomGenerator(int WorldWidth, int WorldHeight, long seed) {
@@ -27,9 +26,9 @@ public class RoomGenerator {
     }
 
     private boolean checkRoomOverlap(Room roomA) {
-        for(int i = roomA.x; i < roomA.x + roomA.width; ++ i) {
-            for(int j = roomA.y; j < roomA.y + roomA.height; ++ j) {
-                if(worldFrame[i][j] != Tileset.NOTHING) {
+        for (int i = roomA.x; i < roomA.x + roomA.width; ++i) {
+            for (int j = roomA.y; j < roomA.y + roomA.height; ++j) {
+                if (worldFrame[i][j] != Tileset.NOTHING) {
                     return true;
                 }
             }
@@ -44,14 +43,14 @@ public class RoomGenerator {
         int y = uniform(random, 0, WorldHeight - height);
         Room newRoom = new Room(x, y, width, height);
 
-        if(checkRoomOverlap(newRoom)) {
+        if (checkRoomOverlap(newRoom)) {
             return null;
         }
 
-        for(int i = x; i < x + width; ++ i) {
-            for (int j = y; j < y + height; ++ j) {
+        for (int i = x; i < x + width; ++i) {
+            for (int j = y; j < y + height; ++j) {
                 if (i == x || i == x + width - 1 || j == y || j == y + height - 1) {
-                   continue;
+                    continue;
                 } else {
                     worldFrame[i][j] = Tileset.FLOOR;
                 }
@@ -69,13 +68,13 @@ public class RoomGenerator {
     }
 
     public Vector<Room> roomGenerate(int tryTimes) {
-         Vector<Room> rooms = new Vector<>();
-         while(tryTimes --> 0) {
-             Room newRoom = generateRoom();
-             if(newRoom != null) {
+        Vector<Room> rooms = new Vector<>();
+        while (tryTimes-- > 0) {
+            Room newRoom = generateRoom();
+            if (newRoom != null) {
                 rooms.add(newRoom);
-             }
-         }
-         return rooms;
+            }
+        }
+        return rooms;
     }
 }

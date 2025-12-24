@@ -6,9 +6,9 @@ import byow.TileEngine.Tileset;
 import java.io.Serializable;
 
 public class Avatar implements Serializable {
+    private final TETile appearance;
     private int x;
     private int y;
-    private final TETile appearance;
 
     public Avatar(int startX, int startY) {
         this.x = startX;
@@ -35,17 +35,26 @@ public class Avatar implements Serializable {
         int dy = 0;
 
         switch (cmd) {
-            case 'W': dy = 1; break;
-            case 'S': dy = -1; break;
-            case 'A': dx = -1; break;
-            case 'D': dx = 1; break;
-            default: return;
+            case 'W':
+                dy = 1;
+                break;
+            case 'S':
+                dy = -1;
+                break;
+            case 'A':
+                dx = -1;
+                break;
+            case 'D':
+                dx = 1;
+                break;
+            default:
+                return;
         }
 
         int nextX = x + dx;
         int nextY = y + dy;
 
-        if(!isValidMove(world, nextX, nextY)) {
+        if (!isValidMove(world, nextX, nextY)) {
             return;
         }
 
@@ -56,6 +65,11 @@ public class Avatar implements Serializable {
         world[x][y] = this.appearance;
     }
 
-    public int getX() { return x; }
-    public int getY() { return y; }
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
