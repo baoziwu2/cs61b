@@ -226,6 +226,7 @@ public class Engine {
                         break;
                     case ':':
                         if (i + 1 < input.length() && input.charAt(i + 1) == 'Q') {
+                            saveGame();
                             return worldFrame;
                         }
                         break;
