@@ -60,11 +60,11 @@ public class RoomGenerator {
         return newRoom;
     }
 
-    public void roomInit(long seed, int worldWidth, int worldHeight, TETile[][] worldFrame) {
+    public void roomInit(long seed, int width, int height, TETile[][] world) {
         initialize(seed);
-        this.worldWidth = worldWidth;
-        this.worldHeight = worldHeight;
-        this.worldFrame = worldFrame;
+        this.worldWidth = width;
+        this.worldHeight = height;
+        this.worldFrame = world;
     }
 
     public Vector<Room> roomGenerate(int tryTimes) {

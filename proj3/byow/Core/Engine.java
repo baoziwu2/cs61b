@@ -247,18 +247,18 @@ public class Engine {
         return worldFrame;
     }
 
-    private void initializeAvatar(TETile[][] worldFrame, WorldGenerator worldGenerator) {
-        Room firstRoom = worldGenerator.rooms.get(0);
+    private void initializeAvatar(TETile[][] world, WorldGenerator generator) {
+        Room firstRoom = generator.rooms.get(0);
         int avatarX = firstRoom.x + firstRoom.width / 2;
         int avatarY = firstRoom.y + firstRoom.height / 2;
 
         avatar = new Avatar(avatarX, avatarY);
-        worldFrame[avatarX][avatarY] = byow.TileEngine.Tileset.AVATAR;
+        world[avatarX][avatarY] = byow.TileEngine.Tileset.AVATAR;
     }
 
-    private void move(TETile[][] worldFrame, char cmd) {
+    private void move(TETile[][] world, char cmd) {
         if (avatar != null) {
-            avatar.move(worldFrame, cmd);
+            avatar.move(world, cmd);
         }
     }
 }
