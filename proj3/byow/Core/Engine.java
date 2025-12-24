@@ -92,6 +92,7 @@ public class Engine {
                         selected = true;
                         // System.exit(0);
                         break;
+                    default:
                 }
             }
         }
@@ -142,11 +143,12 @@ public class Engine {
                 char c = Character.toUpperCase(StdDraw.nextKeyTyped());
 
                 if (c == ':') {
-                    while (!StdDraw.hasNextKeyTyped()) ;
+                    while (!StdDraw.hasNextKeyTyped()) {
+                        // wait for next key
+                    }
                     if (Character.toUpperCase(StdDraw.nextKeyTyped()) == 'Q') {
                         saveGame();
                         return;
-//                        System.exit(0);
                     }
                 } else {
                     avatar.move(worldFrame, c);
@@ -189,7 +191,6 @@ public class Engine {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] interactWithInputString(String input) {
-        // TODO: Fill out this method so that it run the engine using the input
         // passed in as an argument, and return a 2D tile representation of the
         // world that would have been drawn if the same inputs had been given
         // to interactWithKeyboard().
@@ -238,12 +239,12 @@ public class Engine {
                             move(worldFrame, c);
                         }
                         break;
+                    default:
                 }
             }
         }
 
         return worldFrame;
-
     }
 
     private void initializeAvatar(TETile[][] worldFrame, WorldGenerator worldGenerator) {
